@@ -9,6 +9,9 @@ import jakarta.persistence.Lob
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 
+/**
+ * GitHub repository metadata entity
+ */
 @Entity
 @Table(name = "github_repo_metadata")
 class GithubRepoMetadata(
@@ -61,4 +64,17 @@ class GithubRepoMetadata(
     @Column(name = "subscriber_count")
     val subscriberCount: Int,
 ) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other != null && javaClass != other?.javaClass) return false
+
+        other as GithubRepoMetadata
+
+        return id != null && id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return 2025
+    }
 }

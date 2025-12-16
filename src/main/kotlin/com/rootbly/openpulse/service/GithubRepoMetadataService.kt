@@ -6,6 +6,9 @@ import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * GitHub repository metadata management service
+ */
 @Service
 @Transactional(readOnly = true)
 class GithubRepoMetadataService(
@@ -13,6 +16,11 @@ class GithubRepoMetadataService(
     private val objectMapper: ObjectMapper
 ) {
 
+    /**
+     * Saves or updates GitHub repository metadata
+     *
+     * Topics are serialized to JSON array. Uses upsert to keep latest information.
+     */
     @Transactional
     fun save(response: GithubRepoResponse) {
         val topicsJson = if (response.topics.isNotEmpty()) {

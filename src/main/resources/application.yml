@@ -14,7 +14,7 @@ spring:
         order_updates: true
         generate_statistics: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 logging:
   level:

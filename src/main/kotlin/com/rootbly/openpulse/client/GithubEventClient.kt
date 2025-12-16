@@ -12,6 +12,9 @@ import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.function.client.bodyToMono
 import org.springframework.web.util.UriComponentsBuilder
 
+/**
+ * GitHub API HTTP client
+ */
 @Service
 class GithubEventClient(
     private val githubWebClient: WebClient
@@ -19,6 +22,14 @@ class GithubEventClient(
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
+    /**
+     * Fetches GitHub public events
+     *
+     * @return List of GitHub event DTOs
+     * @throws GithubClientException on 4xx client errors
+     * @throws GithubServerException on 5xx server errors
+     * @throws DecodingException on JSON decoding failure
+     */
     suspend fun fetchEvents(): List<GithubEventDto> {
         return try {
             logger.info("Fetching GitHub events")
@@ -34,6 +45,14 @@ class GithubEventClient(
         }
     }
 
+    /**
+     * Fetches repository metadata
+     *
+     * @param repoName Full repository name (e.g., "owner/repository")
+     * @return Repository metadata response
+     * @throws GithubClientException on 4xx errors or decoding failure
+     * @throws GithubServerException on 5xx errors
+     */
     suspend fun fetchRepoMetadata(repoName: String): GithubRepoResponse {
         return try {
             logger.debug("Fetching repository metadata for: {}", repoName)
@@ -46,7 +65,7 @@ class GithubEventClient(
             githubWebClient.get()
                 .uri(encodedUri)
                 .retrieve()
-                .applyErrorHandling("repo: $repoName")  // 공통 함수 사용
+                .applyErrorHandling("repo: $repoName")
                 .awaitBody<GithubRepoResponse>()
         } catch (e: DecodingException) {
             handleDecodingError(e, "repo: $repoName")
@@ -54,6 +73,14 @@ class GithubEventClient(
         }
     }
 
+    /**
+     * Applies common error handling to WebClient responses
+     *
+     * Creates custom exceptions and logs 4xx/5xx errors.
+     *
+     * @param context Context for error logging (e.g., "events", "repo: owner/repo")
+     * @return ResponseSpec with error handling applied
+     */
     private fun WebClient.ResponseSpec.applyErrorHandling(
         context: String
     ): WebClient.ResponseSpec {

@@ -1,20 +1,18 @@
 package com.rootbly.openpulse.scheduler
 
-import com.rootbly.openpulse.client.GithubEventClient
-import com.rootbly.openpulse.event.channel.GithubEventChannel
-import com.rootbly.openpulse.event.dto.GithubRepoMetadataFetchEvent
-import com.rootbly.openpulse.service.GithubEventService
-import com.rootbly.openpulse.service.GithubRepoMetadataService
 import com.rootbly.openpulse.usecase.GithubMetadataCollectorUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
+/**
+ * GitHub event periodic collection scheduler
+ *
+ * Collects event data and repository metadata.
+ */
 @Component
 class GithubEventScheduler(
     private val githubMetadataCollectorUseCase: GithubMetadataCollectorUseCase
@@ -23,6 +21,9 @@ class GithubEventScheduler(
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private val scope = CoroutineScope(Dispatchers.IO)
 
+    /**
+     * Periodically fetches and saves GitHub events and repository metadata
+     */
     @Scheduled(fixedDelay = 3000)
     fun fetchAndSaveGithubEvents() {
         scope.launch {
