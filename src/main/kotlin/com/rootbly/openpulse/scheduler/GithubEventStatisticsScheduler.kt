@@ -10,7 +10,6 @@ class GithubEventStatisticsScheduler(
 ) {
 
     @Scheduled(cron = "0 0 0/1 * * *")
-
     fun generateGithubEventStatisticsHourly() {
         githubEventStatisticHourlyService.generateHourlyEventStatistics()
     }

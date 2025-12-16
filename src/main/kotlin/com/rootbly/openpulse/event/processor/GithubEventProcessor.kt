@@ -48,7 +48,9 @@ class GithubEventProcessor(
 
     @PreDestroy
     fun cleanup() {
+        logger.info("Shutting down {} workers", concurrentWorkers)
         scope.cancel()
+        logger.info("All workers terminated")
     }
 
 }

@@ -16,7 +16,8 @@ class GithubEventManualController(
 ) {
 
     @GetMapping("/manual")
-    suspend fun eventCollect() {
+    suspend fun eventCollect(): ResponseEntity<Map<String, String>> {
         githubMetadataCollectorUseCase.collectGithubEventAndRepoMetadata()
+        return ResponseEntity.ok(mapOf("status" to "success"))
     }
 }
