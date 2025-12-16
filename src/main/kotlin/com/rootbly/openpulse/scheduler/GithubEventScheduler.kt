@@ -24,7 +24,7 @@ class GithubEventScheduler(
     /**
      * Periodically fetches and saves GitHub events and repository metadata
      */
-    @Scheduled(fixedDelay = 3000)
+//    @Scheduled(fixedDelay = 3000)
     fun fetchAndSaveGithubEvents() {
         scope.launch {
             try {

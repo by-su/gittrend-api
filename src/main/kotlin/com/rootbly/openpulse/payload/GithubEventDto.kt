@@ -5,7 +5,7 @@ import com.rootbly.openpulse.entity.event.Actor
 import com.rootbly.openpulse.entity.event.GithubEvent
 import com.rootbly.openpulse.entity.event.Payload
 import com.rootbly.openpulse.entity.event.Repo
-import java.time.LocalDateTime
+import java.time.Instant
 import kotlin.Long
 
 data class GithubEventDto(
@@ -16,7 +16,7 @@ data class GithubEventDto(
     val payload: GithubPayloadDto,
     val public: Boolean,
     @JsonProperty("created_at")
-    val createdAt: LocalDateTime?
+    val createdAt: Instant?
 ) {
     fun toEntity(): GithubEvent {
         return GithubEvent(
@@ -26,7 +26,7 @@ data class GithubEventDto(
             repo = repo.toEntity(),
             payload = payload.toEntity(),
             public = public,
-            createdAt = createdAt ?: LocalDateTime.now()
+            createdAt = createdAt ?: Instant.now()
         )
     }
 }

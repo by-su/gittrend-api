@@ -40,7 +40,7 @@ class GithubEventJdbcRepository(
             ps.setString(idx++, event.payload.head)
             ps.setString(idx++, event.payload.before)
             ps.setBoolean(idx++, event.public)
-            ps.setTimestamp(idx++, Timestamp.valueOf(event.createdAt))
+            ps.setTimestamp(idx++, Timestamp.from(event.createdAt))
         }
     }
 }
