@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 @SpringBootTest
@@ -21,11 +21,6 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
     private val eventRepository: GithubEventRepository
 ) {
 
-    companion object {
-        private val SEOUL_ZONE = ZoneId.of("Asia/Seoul")
-        private val UTC_ZONE = ZoneId.of("UTC")
-    }
-
     @BeforeEach
     fun clean() {
         dailyRepository.deleteAll()
@@ -34,26 +29,23 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
 
     @Test
     fun `generateDailyEventStatistic should aggregate hourly statistics into daily statistics`() {
-        // Given: Create events for a specific day in UTC
-        val targetDayKST = LocalDateTime.of(2024, 1, 15, 0, 0)
-        val dayStartUTC = targetDayKST
-            .atZone(SEOUL_ZONE)
-            .withZoneSameInstant(UTC_ZONE)
-            .toInstant()
+        // Given: Create events for a specific day
+        val targetDay = LocalDateTime.of(2024, 1, 15, 0, 0)
+        val dayStart = targetDay.toInstant(ZoneOffset.UTC)
 
         // Create events throughout the day
         val events = listOf(
-            GithubEventFixture.createSimple(1L, "PushEvent", dayStartUTC.plus(1, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(2L, "PushEvent", dayStartUTC.plus(5, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(3L, "PushEvent", dayStartUTC.plus(10, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(4L, "IssueCommentEvent", dayStartUTC.plus(2, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(5L, "IssueCommentEvent", dayStartUTC.plus(8, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(6L, "WatchEvent", dayStartUTC.plus(15, ChronoUnit.HOURS))
+            GithubEventFixture.createSimple(1L, "PushEvent", dayStart.plus(1, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(2L, "PushEvent", dayStart.plus(5, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(3L, "PushEvent", dayStart.plus(10, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(4L, "IssueCommentEvent", dayStart.plus(2, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(5L, "IssueCommentEvent", dayStart.plus(8, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(6L, "WatchEvent", dayStart.plus(15, ChronoUnit.HOURS))
         )
         eventRepository.saveAll(events)
 
         // When
-        service.generateDailyEventStatistic(targetDayKST)
+        service.generateDailyEventStatistic(targetDay)
 
         // Then
         val statistics = dailyRepository.findAll()
@@ -61,7 +53,7 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
 
         val pushStats = statistics.first { it.eventType == "PushEvent" }
         assertEquals(3, pushStats.eventCount)
-        assertEquals(dayStartUTC, pushStats.statisticDay)
+        assertEquals(dayStart, pushStats.statisticDay)
 
         val issueStats = statistics.first { it.eventType == "IssueCommentEvent" }
         assertEquals(2, issueStats.eventCount)
@@ -73,21 +65,18 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
     @Test
     fun `generateDailyEventStatistic should use current time for createdAt and updatedAt`() {
         // Given
-        val targetDayKST = LocalDateTime.of(2024, 1, 15, 0, 0)
-        val dayStartUTC = targetDayKST
-            .atZone(SEOUL_ZONE)
-            .withZoneSameInstant(UTC_ZONE)
-            .toInstant()
+        val targetDay = LocalDateTime.of(2024, 1, 15, 0, 0)
+        val dayStart = targetDay.toInstant(ZoneOffset.UTC)
 
         val events = listOf(
-            GithubEventFixture.createSimple(1L, "PushEvent", dayStartUTC.plus(1, ChronoUnit.HOURS))
+            GithubEventFixture.createSimple(1L, "PushEvent", dayStart.plus(1, ChronoUnit.HOURS))
         )
         eventRepository.saveAll(events)
 
         val beforeExecution = Instant.now()
 
         // When
-        service.generateDailyEventStatistic(targetDayKST)
+        service.generateDailyEventStatistic(targetDay)
 
         val afterExecution = Instant.now()
 
@@ -109,10 +98,10 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
     @Test
     fun `generateDailyEventStatistic should handle empty statistics gracefully`() {
         // Given: No events for the target day
-        val targetDayKST = LocalDateTime.of(2024, 1, 15, 0, 0)
+        val targetDay = LocalDateTime.of(2024, 1, 15, 0, 0)
 
         // When
-        service.generateDailyEventStatistic(targetDayKST)
+        service.generateDailyEventStatistic(targetDay)
 
         // Then
         val statistics = dailyRepository.findAll()
@@ -122,25 +111,22 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
     @Test
     fun `generateDailyEventStatistic should only aggregate events within the target day`() {
         // Given: Events on different days
-        val targetDayKST = LocalDateTime.of(2024, 1, 15, 0, 0)
-        val dayStartUTC = targetDayKST
-            .atZone(SEOUL_ZONE)
-            .withZoneSameInstant(UTC_ZONE)
-            .toInstant()
+        val targetDay = LocalDateTime.of(2024, 1, 15, 0, 0)
+        val dayStart = targetDay.toInstant(ZoneOffset.UTC)
 
         val events = listOf(
             // Events on target day (should be included)
-            GithubEventFixture.createSimple(1L, "PushEvent", dayStartUTC.plus(1, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(2L, "PushEvent", dayStartUTC.plus(23, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(1L, "PushEvent", dayStart.plus(1, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(2L, "PushEvent", dayStart.plus(23, ChronoUnit.HOURS)),
             // Events on previous day (should be excluded)
-            GithubEventFixture.createSimple(3L, "PushEvent", dayStartUTC.minus(1, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(3L, "PushEvent", dayStart.minus(1, ChronoUnit.HOURS)),
             // Events on next day (should be excluded)
-            GithubEventFixture.createSimple(4L, "PushEvent", dayStartUTC.plus(25, ChronoUnit.HOURS))
+            GithubEventFixture.createSimple(4L, "PushEvent", dayStart.plus(25, ChronoUnit.HOURS))
         )
         eventRepository.saveAll(events)
 
         // When
-        service.generateDailyEventStatistic(targetDayKST)
+        service.generateDailyEventStatistic(targetDay)
 
         // Then
         val statistics = dailyRepository.findAll()
@@ -152,53 +138,47 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
     }
 
     @Test
-    fun `generateDailyEventStatistic should correctly convert KST to UTC`() {
-        // Given: Target day in KST
-        val targetDayKST = LocalDateTime.of(2024, 1, 15, 14, 30) // 2024-01-15 14:30 KST
-        val expectedDayStartUTC = LocalDateTime.of(2024, 1, 15, 0, 0)
-            .atZone(SEOUL_ZONE)
-            .withZoneSameInstant(UTC_ZONE)
-            .toInstant()
+    fun `generateDailyEventStatistic should truncate to day boundary`() {
+        // Given: Target day with time component
+        val targetDay = LocalDateTime.of(2024, 1, 15, 14, 30)
+        val expectedDayStart = LocalDateTime.of(2024, 1, 15, 0, 0).toInstant(ZoneOffset.UTC)
 
-        // Create event at the start of the day in UTC
+        // Create event at the start of the day
         val events = listOf(
-            GithubEventFixture.createSimple(1L, "PushEvent", expectedDayStartUTC.plus(1, ChronoUnit.HOURS))
+            GithubEventFixture.createSimple(1L, "PushEvent", expectedDayStart.plus(1, ChronoUnit.HOURS))
         )
         eventRepository.saveAll(events)
 
         // When
-        service.generateDailyEventStatistic(targetDayKST)
+        service.generateDailyEventStatistic(targetDay)
 
         // Then
         val statistics = dailyRepository.findAll()
         assertEquals(1, statistics.size)
 
         val stat = statistics.first()
-        assertEquals(expectedDayStartUTC, stat.statisticDay, "Should store the day start in UTC")
+        assertEquals(expectedDayStart, stat.statisticDay, "Should truncate to day boundary")
     }
 
     @Test
     fun `generateDailyEventStatistic should handle multiple event types correctly`() {
         // Given: Various event types
-        val targetDayKST = LocalDateTime.of(2024, 1, 15, 0, 0)
-        val dayStartUTC = targetDayKST
-            .atZone(SEOUL_ZONE)
-            .withZoneSameInstant(UTC_ZONE)
-            .toInstant()
+        val targetDay = LocalDateTime.of(2024, 1, 15, 0, 0)
+        val dayStart = targetDay.toInstant(ZoneOffset.UTC)
 
         val events = listOf(
-            GithubEventFixture.createSimple(1L, "PushEvent", dayStartUTC.plus(1, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(2L, "PushEvent", dayStartUTC.plus(2, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(3L, "IssueCommentEvent", dayStartUTC.plus(3, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(4L, "PullRequestEvent", dayStartUTC.plus(4, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(5L, "WatchEvent", dayStartUTC.plus(5, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(6L, "WatchEvent", dayStartUTC.plus(6, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(7L, "WatchEvent", dayStartUTC.plus(7, ChronoUnit.HOURS))
+            GithubEventFixture.createSimple(1L, "PushEvent", dayStart.plus(1, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(2L, "PushEvent", dayStart.plus(2, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(3L, "IssueCommentEvent", dayStart.plus(3, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(4L, "PullRequestEvent", dayStart.plus(4, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(5L, "WatchEvent", dayStart.plus(5, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(6L, "WatchEvent", dayStart.plus(6, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(7L, "WatchEvent", dayStart.plus(7, ChronoUnit.HOURS))
         )
         eventRepository.saveAll(events)
 
         // When
-        service.generateDailyEventStatistic(targetDayKST)
+        service.generateDailyEventStatistic(targetDay)
 
         // Then
         val statistics = dailyRepository.findAll().sortedBy { it.eventType }
@@ -221,14 +201,11 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
     fun `generateDailyEventStatistic should use default parameter for yesterday`() {
         // Given: Events from yesterday
         val yesterday = LocalDateTime.now().minusDays(1)
-        val dayStartUTC = yesterday.truncatedTo(ChronoUnit.DAYS)
-            .atZone(SEOUL_ZONE)
-            .withZoneSameInstant(UTC_ZONE)
-            .toInstant()
+        val dayStart = yesterday.truncatedTo(ChronoUnit.DAYS).toInstant(ZoneOffset.UTC)
 
         val events = listOf(
-            GithubEventFixture.createSimple(1L, "PushEvent", dayStartUTC.plus(1, ChronoUnit.HOURS)),
-            GithubEventFixture.createSimple(2L, "PushEvent", dayStartUTC.plus(5, ChronoUnit.HOURS))
+            GithubEventFixture.createSimple(1L, "PushEvent", dayStart.plus(1, ChronoUnit.HOURS)),
+            GithubEventFixture.createSimple(2L, "PushEvent", dayStart.plus(5, ChronoUnit.HOURS))
         )
         eventRepository.saveAll(events)
 
