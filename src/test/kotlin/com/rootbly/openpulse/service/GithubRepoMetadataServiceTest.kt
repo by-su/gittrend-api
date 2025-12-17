@@ -1,8 +1,7 @@
 package com.rootbly.openpulse.service
 
-import com.rootbly.openpulse.payload.GithubRepoResponse
+import com.rootbly.openpulse.fixture.GithubRepoResponseFixture
 import com.rootbly.openpulse.payload.LicenseDto
-import com.rootbly.openpulse.payload.OwnerDto
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -27,7 +26,7 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
     @Test
     fun `save should insert new repository metadata when repoId does not exist`() {
         // Given
-        val response = buildGithubRepoResponse(
+        val response = GithubRepoResponseFixture.create(
             id = 12345L,
             name = "test-repo",
             owner = "test-owner",
@@ -51,7 +50,7 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
     @Test
     fun `save should update existing repository metadata when repoId already exists`() {
         // Given - Insert initial data
-        val initialResponse = buildGithubRepoResponse(
+        val initialResponse = GithubRepoResponseFixture.create(
             id = 12345L,
             name = "test-repo",
             owner = "test-owner",
@@ -63,7 +62,7 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
         assertEquals(1, initialCount, "Initial insert should create one record")
 
         // When - Update with same repoId but different data
-        val updatedResponse = buildGithubRepoResponse(
+        val updatedResponse = GithubRepoResponseFixture.create(
             id = 12345L,
             name = "updated-repo",
             owner = "updated-owner",
@@ -86,7 +85,7 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
     fun `save should update all fields correctly on upsert`() {
         // Given - Insert initial data
         val now = Instant.now()
-        val initialResponse = buildGithubRepoResponse(
+        val initialResponse = GithubRepoResponseFixture.create(
             id = 12345L,
             name = "test-repo",
             owner = "test-owner",
@@ -116,7 +115,7 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
 
         // When - Update all fields
         val updatedNow = Instant.now().plusSeconds(3600)
-        val updatedResponse = buildGithubRepoResponse(
+        val updatedResponse = GithubRepoResponseFixture.create(
             id = 12345L,
             name = "updated-repo",
             owner = "updated-owner",
@@ -173,7 +172,7 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
     @Test
     fun `save should handle null fields correctly`() {
         // Given
-        val response = buildGithubRepoResponse(
+        val response = GithubRepoResponseFixture.create(
             id = 12345L,
             name = "test-repo",
             owner = "test-owner",
@@ -198,9 +197,9 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
     @Test
     fun `save should handle multiple different repos correctly`() {
         // Given
-        val repo1 = buildGithubRepoResponse(id = 1L, name = "repo1", owner = "owner1")
-        val repo2 = buildGithubRepoResponse(id = 2L, name = "repo2", owner = "owner2")
-        val repo3 = buildGithubRepoResponse(id = 3L, name = "repo3", owner = "owner3")
+        val repo1 = GithubRepoResponseFixture.create(id = 1L, name = "repo1", owner = "owner1")
+        val repo2 = GithubRepoResponseFixture.create(id = 2L, name = "repo2", owner = "owner2")
+        val repo3 = GithubRepoResponseFixture.create(id = 3L, name = "repo3", owner = "owner3")
 
         // When
         service.save(repo1)
@@ -219,16 +218,16 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
     @Test
     fun `save should update only the specific repo without affecting others`() {
         // Given - Insert 3 repos
-        val repo1 = buildGithubRepoResponse(id = 1L, name = "repo1", owner = "owner1", stargazersCount = 100)
-        val repo2 = buildGithubRepoResponse(id = 2L, name = "repo2", owner = "owner2", stargazersCount = 200)
-        val repo3 = buildGithubRepoResponse(id = 3L, name = "repo3", owner = "owner3", stargazersCount = 300)
+        val repo1 = GithubRepoResponseFixture.create(id = 1L, name = "repo1", owner = "owner1", stargazersCount = 100)
+        val repo2 = GithubRepoResponseFixture.create(id = 2L, name = "repo2", owner = "owner2", stargazersCount = 200)
+        val repo3 = GithubRepoResponseFixture.create(id = 3L, name = "repo3", owner = "owner3", stargazersCount = 300)
 
         service.save(repo1)
         service.save(repo2)
         service.save(repo3)
 
         // When - Update only repo2
-        val updatedRepo2 = buildGithubRepoResponse(
+        val updatedRepo2 = GithubRepoResponseFixture.create(
             id = 2L,
             name = "updated-repo2",
             owner = "updated-owner2",
@@ -259,51 +258,5 @@ class GithubRepoMetadataServiceTest @Autowired constructor(
         assertEquals("repo3", savedRepo3.name)
         assertEquals("owner3", savedRepo3.owner)
         assertEquals(300, savedRepo3.starCount)
-    }
-
-    private fun buildGithubRepoResponse(
-        id: Long,
-        name: String,
-        owner: String,
-        description: String? = "Test description",
-        fork: Boolean = false,
-        language: String? = "Kotlin",
-        visibility: String = "public",
-        createdAt: Instant = Instant.now(),
-        updatedAt: Instant = Instant.now(),
-        pushedAt: Instant = Instant.now(),
-        stargazersCount: Int = 0,
-        watchersCount: Int = 0,
-        forksCount: Int = 0,
-        openIssuesCount: Int = 0,
-        license: LicenseDto? = null,
-        topics: List<String> = emptyList(),
-        networkCount: Int = 0,
-        subscribersCount: Int = 0
-    ): GithubRepoResponse {
-        return GithubRepoResponse(
-            id = id,
-            name = name,
-            owner = OwnerDto(
-                login = owner,
-                id = id,
-                avatarUrl = "https://avatars.githubusercontent.com/u/$id"
-            ),
-            description = description,
-            fork = fork,
-            language = language,
-            visibility = visibility,
-            createdAt = createdAt,
-            updatedAt = updatedAt,
-            pushedAt = pushedAt,
-            stargazersCount = stargazersCount,
-            watchersCount = watchersCount,
-            forksCount = forksCount,
-            openIssuesCount = openIssuesCount,
-            license = license,
-            topics = topics,
-            networkCount = networkCount,
-            subscribersCount = subscribersCount
-        )
     }
 }

@@ -1,5 +1,6 @@
 package com.rootbly.openpulse.scheduler
 
+import com.rootbly.openpulse.service.GithubEventStatisticDailyService
 import com.rootbly.openpulse.service.GithubEventStatisticHourlyService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Component
  */
 @Component
 class GithubEventStatisticsScheduler(
-    private val githubEventStatisticHourlyService: GithubEventStatisticHourlyService
+    private val githubEventStatisticHourlyService: GithubEventStatisticHourlyService,
+    private val githubEventStatisticDailyService: GithubEventStatisticDailyService
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -26,6 +28,17 @@ class GithubEventStatisticsScheduler(
             logger.info("Successfully completed hourly statistics generation")
         } catch (e: Exception) {
             logger.error("Failed to generate hourly statistics", e)
+        }
+    }
+
+    @Scheduled(fixedRate = 3000)
+    fun generateGithubEventStatisticDaily() {
+        logger.info("Starting daily GitHub event statistic generation")
+        try {
+            githubEventStatisticDailyService.generateDailyEventStatistic()
+            logger.info("Successfully completed daily statistic generation")
+        } catch (e: Exception) {
+            logger.error("Failed to generate daily statistic", e)
         }
     }
 }
