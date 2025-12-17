@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import java.time.LocalDateTime
 
 interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> {
 
@@ -62,4 +63,13 @@ interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> 
         @Param("response") response: GithubRepoResponse,
         @Param("topicsJson") topicsJson: String?
     )
+
+    /**
+     * Find repositories created or updated within a time range
+     */
+    @Query("SELECT r FROM GithubRepoMetadata r WHERE r.createdAt >= :startTime AND r.createdAt < :endTime")
+    fun findByCreatedAtBetween(
+        @Param("startTime") startTime: LocalDateTime,
+        @Param("endTime") endTime: LocalDateTime
+    ): List<GithubRepoMetadata>
 }
