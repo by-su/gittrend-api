@@ -31,7 +31,7 @@ class GithubEventStatisticsScheduler(
         }
     }
 
-    @Scheduled(fixedRate = 3000)
+    @Scheduled(cron = "0 0 0 * * *")
     fun generateGithubEventStatisticDaily() {
         logger.info("Starting daily GitHub event statistic generation")
         try {
