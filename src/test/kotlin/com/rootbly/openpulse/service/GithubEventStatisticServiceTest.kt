@@ -55,7 +55,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
     fun `updateHourlyStatistics should create statistics for events in the specified hour`() {
         // Given
         val targetHour = createHourStart(TEST_YEAR, TEST_MONTH, TEST_DAY, TEST_HOUR, minute = 30)
-        val hourStart = targetHour.toInstant(ZoneOffset.UTC)
+        val hourStart = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
 
         val events = listOf(
             GithubEventFixture.createSimple(1L, "PushEvent", hourStart.plus(10, ChronoUnit.MINUTES)),
@@ -74,7 +74,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
         assertEventCount(statistics, "PushEvent", 2)
         assertEventCount(statistics, "PullRequestEvent", 1)
 
-        val expectedStatisticHour = targetHour.toInstant(ZoneOffset.UTC)
+        val expectedStatisticHour = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
         statistics.forEach { assertStatisticHourMatches(it, expectedStatisticHour) }
     }
 
@@ -82,7 +82,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
     fun `updateHourlyStatistics should truncate time to hour`() {
         // Given - 14:30:45 should be truncated to 14:00:00
         val targetHour = createHourStart(TEST_YEAR, TEST_MONTH, TEST_DAY, TEST_HOUR, minute = 30, second = 45)
-        val hourStart = targetHour.toInstant(ZoneOffset.UTC)
+        val hourStart = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
 
         val event = GithubEventFixture.createSimple(1L, "IssueEvent", hourStart.plus(15, ChronoUnit.MINUTES))
         githubEventRepository.save(event)
@@ -94,7 +94,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
         val statistics = githubEventStatisticsHourlyRepository.findAll()
         assertEquals(1, statistics.size, "Should create exactly one statistic entry")
 
-        val expectedStatisticHour = targetHour.toInstant(ZoneOffset.UTC)
+        val expectedStatisticHour = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
         assertStatisticHourMatches(statistics[0], expectedStatisticHour)
     }
 
@@ -102,7 +102,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
     fun `updateHourlyStatistics should only include events within the hour range`() {
         // Given
         val targetHour = createHourStart(TEST_YEAR, TEST_MONTH, TEST_DAY, TEST_HOUR)
-        val hourStart = targetHour.toInstant(ZoneOffset.UTC)
+        val hourStart = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
 
         val events = listOf(
             GithubEventFixture.createSimple(1L, "PushEvent", hourStart.plus(30, ChronoUnit.MINUTES)),
@@ -125,7 +125,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
     fun `updateHourlyStatistics should handle multiple event types correctly`() {
         // Given
         val targetHour = createHourStart(TEST_YEAR, TEST_MONTH, TEST_DAY, TEST_HOUR)
-        val hourStart = targetHour.toInstant(ZoneOffset.UTC)
+        val hourStart = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
 
         val events = listOf(
             GithubEventFixture.createSimple(1L, "PushEvent", hourStart.plus(10, ChronoUnit.MINUTES)),
@@ -171,7 +171,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
     fun `updateHourlyStatistics should handle hour boundary correctly`() {
         // Given
         val targetHour = createHourStart(TEST_YEAR, TEST_MONTH, TEST_DAY, hour = 0)
-        val hourStart = targetHour.toInstant(ZoneOffset.UTC)
+        val hourStart = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
 
         val event = GithubEventFixture.createSimple(1L, "PushEvent", hourStart.plus(30, ChronoUnit.MINUTES))
         githubEventRepository.save(event)
@@ -183,7 +183,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
         val statistics = githubEventStatisticsHourlyRepository.findAll()
         assertEquals(1, statistics.size, "Should create exactly one statistic entry")
 
-        val expectedInstant = targetHour.toInstant(ZoneOffset.UTC)
+        val expectedInstant = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
         assertEquals(expectedInstant, statistics[0].statisticHour, "Statistic hour should match expected time")
     }
 
@@ -191,7 +191,7 @@ class GithubEventStatisticServiceTest @Autowired constructor(
     fun `updateHourlyStatistics should set createdAt and updatedAt to hourStart`() {
         // Given
         val targetHour = createHourStart(TEST_YEAR, TEST_MONTH, TEST_DAY, TEST_HOUR)
-        val hourStart = targetHour.toInstant(ZoneOffset.UTC)
+        val hourStart = targetHour.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
 
         val event = GithubEventFixture.createSimple(1L, "PushEvent", hourStart.plus(30, ChronoUnit.MINUTES))
         githubEventRepository.save(event)

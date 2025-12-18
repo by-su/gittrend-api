@@ -32,10 +32,10 @@ class GithubEventStatisticHourlyService(
     @Transactional
     fun generateHourlyEventStatistics(targetHour: LocalDateTime = LocalDateTime.now()) {
         val hourStart = targetHour.truncatedTo(ChronoUnit.HOURS)
-        val hourStartInstant = hourStart.toInstant(ZoneOffset.UTC)
+        val hourStartInstant = hourStart.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
 
         val hourEndInstant = hourStartInstant.plus(1, ChronoUnit.HOURS)
-        
+
         val statistics = githubEventRepository.findByEventTypeStatisticsByTimeRange(
             startTime = hourStartInstant,
             endTime = hourEndInstant
