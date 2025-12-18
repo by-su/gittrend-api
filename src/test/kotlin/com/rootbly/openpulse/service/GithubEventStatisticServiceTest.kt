@@ -2,6 +2,7 @@ package com.rootbly.openpulse.service
 
 import com.rootbly.openpulse.entity.GithubEventStatisticHourly
 import com.rootbly.openpulse.fixture.GithubEventFixture
+import com.rootbly.openpulse.fixture.GithubEventStatisticHourlyFixture
 import com.rootbly.openpulse.repository.GithubEventRepository
 import com.rootbly.openpulse.repository.GithubEventStatisticsHourlyRepository
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -206,6 +207,46 @@ class GithubEventStatisticServiceTest @Autowired constructor(
         val statistic = statistics[0]
         assertEquals(statistic.statisticHour, statistic.createdAt, "createdAt should equal statisticHour")
         assertEquals(statistic.statisticHour, statistic.updatedAt, "updatedAt should equal statisticHour")
+    }
+
+    @Test
+    fun `retrieveGithubEventHourlyStatistic should return statistics from previous hour`() {
+        // Given
+        val currentTime = LocalDateTime.now()
+        val hourStart = currentTime.truncatedTo(ChronoUnit.HOURS)
+        val previousHourStart = hourStart.minusHours(1)
+
+        val startTime = previousHourStart.toInstant(ZoneOffset.UTC)
+        val endTime = hourStart.toInstant(ZoneOffset.UTC)
+
+        val stat1 = GithubEventStatisticHourlyFixture.create(
+            eventType = "PushEvent",
+            eventCount = 10,
+            statisticHour = startTime
+        )
+
+        val stat2 = GithubEventStatisticHourlyFixture.create(
+            eventType = "PullRequestEvent",
+            eventCount = 5,
+            statisticHour = startTime.plus(30, ChronoUnit.MINUTES)
+        )
+
+        val stat3 = GithubEventStatisticHourlyFixture.create(
+            eventType = "IssueEvent",
+            eventCount = 3,
+            statisticHour = endTime.plus(10, ChronoUnit.MINUTES)
+        )
+
+        githubEventStatisticsHourlyRepository.saveAll(listOf(stat1, stat2, stat3))
+
+        // When
+        val result = service.retrieveGithubEventStatisticHourly()
+
+        // Then
+        assertEquals(2, result.size, "Should return 2 statistics from previous hour")
+        assertTrue(result.any { it.eventType == "PushEvent" && it.eventCount == 10 }, "Should include PushEvent statistic")
+        assertTrue(result.any { it.eventType == "PullRequestEvent" && it.eventCount == 5 }, "Should include PullRequestEvent statistic")
+        assertTrue(result.none { it.eventType == "IssueEvent" }, "Should not include statistics outside time range")
     }
 
 }

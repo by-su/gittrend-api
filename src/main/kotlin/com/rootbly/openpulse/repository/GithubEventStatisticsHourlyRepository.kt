@@ -20,4 +20,6 @@ interface GithubEventStatisticsHourlyRepository: JpaRepository<GithubEventStatis
     )
     fun findByEventTypeStatisticByTimeRange(startTime: Instant, endTime: Instant): List<EventTypeCount>
 
+    fun findAllByCreatedAtBetween(startTime: Instant, endTime: Instant): List<GithubEventStatisticHourly>
+
 }

@@ -53,4 +53,20 @@ class GithubEventStatisticHourlyService(
 
         githubEventStatisticsHourlyRepository.saveAll(entities)
     }
+
+    /**
+     * Retrieve GitHubEvent hourly statistic for the previous hour window
+     *
+     * @return List of event type counts for the previous hour
+     */
+    fun retrieveGithubEventStatisticHourly(): List<GithubEventStatisticHourly> {
+        val currentTime = LocalDateTime.now()
+        val hourStart = currentTime.truncatedTo(ChronoUnit.HOURS)
+        val previousHourStart = hourStart.minusHours(1)
+
+        val startTime = previousHourStart.toInstant(ZoneOffset.UTC)
+        val endTime = hourStart.toInstant(ZoneOffset.UTC)
+
+        return githubEventStatisticsHourlyRepository.findAllByCreatedAtBetween(startTime, endTime)
+    }
 }
