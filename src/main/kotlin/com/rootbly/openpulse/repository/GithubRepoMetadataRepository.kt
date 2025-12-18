@@ -67,7 +67,7 @@ interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> 
     /**
      * Find repositories created or updated within a time range
      */
-    @Query("SELECT r FROM GithubRepoMetadata r WHERE r.createdAt >= :startTime AND r.createdAt < :endTime")
+    @Query("SELECT r FROM GithubRepoMetadata r WHERE r.updatedAt >= :startTime AND r.updatedAt < :endTime")
     fun findByUpdatedAtBetween(
         @Param("startTime") startTime: LocalDateTime,
         @Param("endTime") endTime: LocalDateTime
