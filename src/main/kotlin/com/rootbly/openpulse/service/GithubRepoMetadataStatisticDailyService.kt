@@ -2,11 +2,12 @@ package com.rootbly.openpulse.service
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rootbly.openpulse.entity.GithubRepoLanguageStatisticHourly
-import com.rootbly.openpulse.entity.GithubRepoTopicStatisticHourly
-import com.rootbly.openpulse.repository.GithubRepoLanguageStatisticHourlyRepository
+import com.rootbly.openpulse.entity.GithubRepoLanguageStatisticDaily
+import com.rootbly.openpulse.entity.GithubRepoMetadata
+import com.rootbly.openpulse.entity.GithubRepoTopicStatisticDaily
+import com.rootbly.openpulse.repository.GithubRepoLanguageStatisticDailyRepository
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
-import com.rootbly.openpulse.repository.GithubRepoTopicStatisticHourlyRepository
+import com.rootbly.openpulse.repository.GithubRepoTopicStatisticDailyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,35 +17,35 @@ import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 /**
- * GitHub repository metadata hourly statistics generation service
+ * GitHub repository metadata daily statistics generation service
  *
- * Generates topic and language statistics from repository metadata every hour.
+ * Generates topic and language statistics from repository metadata daily.
  */
 @Service
 @Transactional(readOnly = true)
-class GithubRepoMetadataStatisticHourlyService(
+class GithubRepoMetadataStatisticDailyService(
     private val githubRepoMetadataRepository: GithubRepoMetadataRepository,
-    private val githubRepoTopicStatisticHourlyRepository: GithubRepoTopicStatisticHourlyRepository,
-    private val githubRepoLanguageStatisticHourlyRepository: GithubRepoLanguageStatisticHourlyRepository,
+    private val githubRepoTopicStatisticDailyRepository: GithubRepoTopicStatisticDailyRepository,
+    private val githubRepoLanguageStatisticDailyRepository: GithubRepoLanguageStatisticDailyRepository,
     private val objectMapper: ObjectMapper
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
-     * Generates hourly topic and language statistics from repository metadata
+     * Generates daily topic and language statistics from repository metadata
      *
-     * @param targetTime Target time (defaults to previous hour)
+     * @param targetTime Target time (defaults to previous day)
      */
     @Transactional
-    fun generateHourlyRepoMetadataStatistics(targetTime: LocalDateTime = LocalDateTime.now().minusHours(1)) {
-        val hourStart = targetTime.truncatedTo(ChronoUnit.HOURS)
-        val hourEnd = hourStart.plusHours(1)
-        val hourStartInstant = hourStart.toInstant(ZoneOffset.UTC)
+    fun generateDailyRepoMetadataStatistics(targetTime: LocalDateTime = LocalDateTime.now().minusDays(1)) {
+        val dayStart = targetTime.truncatedTo(ChronoUnit.DAYS)
+        val dayEnd = dayStart.plusDays(1)
+        val dayStartInstant = dayStart.toInstant(ZoneOffset.UTC)
 
-        logger.info("Generating repo metadata statistics for hour: $hourStart to $hourEnd")
+        logger.info("Generating repo metadata statistics for day: $dayStart to $dayEnd")
 
-        val repos = githubRepoMetadataRepository.findByUpdatedAtBetween(hourStart, hourEnd)
+        val repos = githubRepoMetadataRepository.findByUpdatedAtBetween(dayStart, dayEnd)
         logger.info("Found ${repos.size} repositories created in the time range")
 
         if (repos.isEmpty()) {
@@ -52,14 +53,14 @@ class GithubRepoMetadataStatisticHourlyService(
             return
         }
 
-        generateTopicStatistics(repos, hourStartInstant)
-        generateLanguageStatistics(repos, hourStartInstant)
+        generateTopicStatistics(repos, dayStartInstant)
+        generateLanguageStatistics(repos, dayStartInstant)
     }
 
     /**
-     * Generates hourly topic statistics
+     * Generates daily topic statistics
      */
-    private fun generateTopicStatistics(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticHour: Instant) {
+    private fun generateTopicStatistics(repos: List<GithubRepoMetadata>, statisticDay: Instant) {
         val topicCounts = mutableMapOf<String, Int>()
 
         repos.forEach { repo ->
@@ -87,23 +88,23 @@ class GithubRepoMetadataStatisticHourlyService(
 
         val now = Instant.now()
         val entities = topicCounts.map { (topic, count) ->
-            GithubRepoTopicStatisticHourly(
+            GithubRepoTopicStatisticDaily(
                 topic = topic,
                 repoCount = count,
-                statisticHour = statisticHour,
+                statisticDay = statisticDay,
                 createdAt = now,
                 updatedAt = now
             )
         }
 
-        githubRepoTopicStatisticHourlyRepository.saveAll(entities)
+        githubRepoTopicStatisticDailyRepository.saveAll(entities)
         logger.info("Saved ${entities.size} topic statistics")
     }
 
     /**
-     * Generates hourly language statistics
+     * Generates daily language statistics
      */
-    private fun generateLanguageStatistics(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticHour: Instant) {
+    private fun generateLanguageStatistics(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticDay: Instant) {
         val languageCounts = mutableMapOf<String, Int>()
 
         repos.forEach { repo ->
@@ -116,16 +117,16 @@ class GithubRepoMetadataStatisticHourlyService(
 
         val now = Instant.now()
         val entities = languageCounts.map { (language, count) ->
-            GithubRepoLanguageStatisticHourly(
+            GithubRepoLanguageStatisticDaily(
                 language = language,
                 repoCount = count,
-                statisticHour = statisticHour,
+                statisticDay = statisticDay,
                 createdAt = now,
                 updatedAt = now
             )
         }
 
-        githubRepoLanguageStatisticHourlyRepository.saveAll(entities)
+        githubRepoLanguageStatisticDailyRepository.saveAll(entities)
         logger.info("Saved ${entities.size} language statistics")
     }
 }

@@ -1,0 +1,6 @@
+package com.rootbly.openpulse.repository
+
+import com.rootbly.openpulse.entity.GithubRepoLanguageStatisticDaily
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface GithubRepoLanguageStatisticDailyRepository : JpaRepository<GithubRepoLanguageStatisticDaily, Long>
