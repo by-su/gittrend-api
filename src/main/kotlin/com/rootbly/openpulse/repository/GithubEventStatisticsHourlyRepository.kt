@@ -18,6 +18,6 @@ interface GithubEventStatisticsHourlyRepository: JpaRepository<GithubEventStatis
         GROUP BY e.type
         """
     )
-    fun findByEventTypeStatisticsByTimeRange(startTime: Instant, endTime: Instant): List<EventTypeCount>
+    fun findByEventTypeStatisticByTimeRange(startTime: Instant, endTime: Instant): List<EventTypeCount>
 
 }

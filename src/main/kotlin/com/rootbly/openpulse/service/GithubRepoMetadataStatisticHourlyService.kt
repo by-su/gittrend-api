@@ -37,7 +37,7 @@ class GithubRepoMetadataStatisticHourlyService(
      * @param targetTime Target time (defaults to previous hour)
      */
     @Transactional
-    fun generateHourlyRepoMetadataStatistics(targetTime: LocalDateTime = LocalDateTime.now().minusHours(1)) {
+    fun generateHourlyRepoMetadataStatistic(targetTime: LocalDateTime = LocalDateTime.now().minusHours(1)) {
         val hourStart = targetTime.truncatedTo(ChronoUnit.HOURS)
         val hourEnd = hourStart.plusHours(1)
         val hourStartInstant = hourStart.toInstant(ZoneOffset.UTC)
@@ -53,7 +53,7 @@ class GithubRepoMetadataStatisticHourlyService(
         }
 
         generateTopicStatistics(repos, hourStartInstant)
-        generateLanguageStatistics(repos, hourStartInstant)
+        generateLanguageStatistic(repos, hourStartInstant)
     }
 
     /**
@@ -103,7 +103,7 @@ class GithubRepoMetadataStatisticHourlyService(
     /**
      * Generates hourly language statistics
      */
-    private fun generateLanguageStatistics(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticHour: Instant) {
+    private fun generateLanguageStatistic(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticHour: Instant) {
         val languageCounts = mutableMapOf<String, Int>()
 
         repos.forEach { repo ->

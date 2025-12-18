@@ -38,7 +38,7 @@ class GithubRepoMetadataStatisticDailyService(
      * @param targetTime Target time (defaults to previous day)
      */
     @Transactional
-    fun generateDailyRepoMetadataStatistics(targetTime: LocalDateTime = LocalDateTime.now().minusDays(1)) {
+    fun generateDailyRepoMetadataStatistic(targetTime: LocalDateTime = LocalDateTime.now().minusDays(1)) {
         val dayStart = targetTime.truncatedTo(ChronoUnit.DAYS)
         val dayEnd = dayStart.plusDays(1)
         val dayStartInstant = dayStart.toInstant(ZoneOffset.UTC)

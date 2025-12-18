@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
  * GitHub event statistics generation scheduler
  */
 @Component
-class GithubEventStatisticsScheduler(
+class GithubEventStatisticScheduler(
     private val githubEventStatisticHourlyService: GithubEventStatisticHourlyService,
     private val githubEventStatisticDailyService: GithubEventStatisticDailyService
 ) {

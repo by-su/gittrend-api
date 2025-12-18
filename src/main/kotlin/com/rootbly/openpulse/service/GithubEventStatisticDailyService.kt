@@ -33,7 +33,7 @@ class GithubEventStatisticDailyService(
 
         val dayEndInstant = dayStartInstant.plus(1, ChronoUnit.DAYS)
 
-        val statistics = githubEventStatisticsHourlyRepository.findByEventTypeStatisticsByTimeRange(
+        val statistics = githubEventStatisticsHourlyRepository.findByEventTypeStatisticByTimeRange(
             startTime = dayStartInstant,
             endTime = dayEndInstant
         )

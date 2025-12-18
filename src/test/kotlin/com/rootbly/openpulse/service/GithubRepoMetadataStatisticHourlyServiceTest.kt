@@ -44,7 +44,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         metadataRepository.saveAll(repos)
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         // Then
         val topicStats = topicRepository.findAll()
@@ -78,7 +78,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         metadataRepository.saveAll(repos)
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         // Then
         val languageStats = languageRepository.findAll()
@@ -112,7 +112,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         metadataRepository.saveAll(repos)
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         // Then
         val topicStats = topicRepository.findAll()
@@ -138,7 +138,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         metadataRepository.saveAll(repos)
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         // Then
         val topicStats = topicRepository.findAll()
@@ -156,7 +156,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         val targetTime = LocalDateTime.of(2024, 1, 15, 10, 0)
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         // Then
         val topicStats = topicRepository.findAll()
@@ -180,7 +180,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         val beforeExecution = Instant.now()
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         val afterExecution = Instant.now()
 
@@ -225,7 +225,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         metadataRepository.saveAll(repos)
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         // Then
         val topicStats = topicRepository.findAll()
@@ -249,7 +249,7 @@ class GithubRepoMetadataStatisticHourlyServiceTest @Autowired constructor(
         metadataRepository.saveAll(repos)
 
         // When
-        service.generateHourlyRepoMetadataStatistics(targetTime)
+        service.generateHourlyRepoMetadataStatistic(targetTime)
 
         // Then
         val topicStats = topicRepository.findAll()

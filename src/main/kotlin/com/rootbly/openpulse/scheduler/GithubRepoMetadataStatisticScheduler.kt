@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
  * GitHub repository metadata statistics generation scheduler
  */
 @Component
-class GithubRepoMetadataStatisticsScheduler(
+class GithubRepoMetadataStatisticScheduler(
     private val githubRepoMetadataStatisticHourlyService: GithubRepoMetadataStatisticHourlyService,
     private val githubRepoMetadataStatisticDailyService: GithubRepoMetadataStatisticDailyService
 ) {
@@ -24,7 +24,7 @@ class GithubRepoMetadataStatisticsScheduler(
     fun generateGithubRepoMetadataStatisticsHourly() {
         logger.info("Starting hourly GitHub repository metadata statistics generation")
         try {
-            githubRepoMetadataStatisticHourlyService.generateHourlyRepoMetadataStatistics()
+            githubRepoMetadataStatisticHourlyService.generateHourlyRepoMetadataStatistic()
             logger.info("Successfully completed hourly repo metadata statistics generation")
         } catch (e: Exception) {
             logger.error("Failed to generate hourly repo metadata statistics", e)
@@ -38,7 +38,7 @@ class GithubRepoMetadataStatisticsScheduler(
     fun generateGithubRepoMetadataStatisticsDaily() {
         logger.info("Starting daily GitHub repository metadata statistics generation")
         try {
-            githubRepoMetadataStatisticDailyService.generateDailyRepoMetadataStatistics()
+            githubRepoMetadataStatisticDailyService.generateDailyRepoMetadataStatistic()
             logger.info("Successfully completed daily repo metadata statistics generation")
         } catch (e: Exception) {
             logger.error("Failed to generate daily repo metadata statistics", e)
