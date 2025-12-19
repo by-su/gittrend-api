@@ -32,6 +32,23 @@ class GithubRepoMetadataStatisticHourlyService(
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
+     * Retrieves previous hour's topic statistics
+     * Hourly statistics are generated at the top of each hour for the previous hour's data
+     * So we return the most recently completed statistics (previous hour)
+     */
+    fun retrieveGithubRepoTopicStatisticHourly(): List<GithubRepoTopicStatisticHourly> {
+        val now = LocalDateTime.now()
+        val currentHourStart = now.truncatedTo(ChronoUnit.HOURS)
+        val previousHourStart = currentHourStart.minusHours(1)
+        val previousHourEnd = currentHourStart
+
+        val startTime = previousHourStart.toInstant(ZoneOffset.UTC)
+        val endTime = previousHourEnd.toInstant(ZoneOffset.UTC)
+
+        return githubRepoTopicStatisticHourlyRepository.findAllByStatisticHourBetween(startTime, endTime)
+    }
+
+    /**
      * Generates hourly topic and language statistics from repository metadata
      *
      * @param targetTime Target time (defaults to previous hour)
