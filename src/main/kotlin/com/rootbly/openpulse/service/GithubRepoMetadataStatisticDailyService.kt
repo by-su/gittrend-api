@@ -33,6 +33,23 @@ class GithubRepoMetadataStatisticDailyService(
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
+     * Retrieves yesterday's daily topic statistics
+     * Daily statistics are generated at 00:00 for the previous day's data
+     * So we return the most recently completed statistics (yesterday)
+     */
+    fun retrieveGithubRepoTopicStatisticDaily(): List<GithubRepoTopicStatisticDaily> {
+        val now = LocalDateTime.now()
+        val todayStart = now.truncatedTo(ChronoUnit.DAYS)
+        val yesterdayStart = todayStart.minusDays(1)
+        val yesterdayEnd = todayStart
+
+        val startTime = yesterdayStart.toInstant(ZoneOffset.UTC)
+        val endTime = yesterdayEnd.toInstant(ZoneOffset.UTC)
+
+        return githubRepoTopicStatisticDailyRepository.findAllByStatisticDayBetween(startTime, endTime)
+    }
+
+    /**
      * Generates daily topic and language statistics from repository metadata
      *
      * @param targetTime Target time (defaults to previous day)
