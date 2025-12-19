@@ -51,4 +51,20 @@ class GithubEventStatisticDailyService(
 
         githubEventStatisticDailyRepository.saveAll(entities)
     }
+
+    /**
+     * Retrieve GitHub event daily statistics for the previous day window
+     *
+     * @return List of event type counts for the previous day
+     */
+    fun retrieveDaily(): List<GithubEventStatisticDaily> {
+        val currentTime = LocalDateTime.now()
+        val dayStart = currentTime.truncatedTo(ChronoUnit.DAYS)
+        val previousDayStart = dayStart.minusDays(1)
+
+        val startTime = previousDayStart.toInstant(ZoneOffset.UTC)
+        val endTime = dayStart.toInstant(ZoneOffset.UTC)
+
+        return githubEventStatisticDailyRepository.findAllByCreatedAtBetween(startTime, endTime)
+    }
 }
