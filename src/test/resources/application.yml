@@ -14,3 +14,7 @@ logging:
   level:
     org.springframework.jdbc.core: DEBUG
 
+github:
+  tokens: > 
+    test-token-1
+    test-token-2

@@ -26,4 +26,6 @@ logging:
     root: info
 
 github:
-  token: ${GITHUB_TOKEN}
+  tokens:
+    - ${GITHUB_TOKEN1}
+    - ${GITHUB_TOKEN2:}

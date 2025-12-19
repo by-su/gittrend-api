@@ -7,8 +7,8 @@ spring:
   jpa:
     properties:
       hibernate:
-        show_sql: true  # SQL 쿼리 출력
-        format_sql: true  # SQL 포맷팅
+#        show_sql: true  # SQL 쿼리 출력
+#        format_sql: true  # SQL 포맷팅
         dialect: org.hibernate.dialect.MySQLDialect
         jdbc:
           batch_size: 30
@@ -29,4 +29,6 @@ logging:
     org.hibernate.stat: DEBUG
 
 github:
-  token: ${GITHUB_TOKEN}
+  tokens: >
+    ${GITHUB_TOKEN1},
+    ${GITHUB_TOKEN2:}
