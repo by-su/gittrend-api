@@ -49,6 +49,23 @@ class GithubRepoMetadataStatisticHourlyService(
     }
 
     /**
+     * Retrieves previous hour's language statistics
+     * Hourly statistics are generated at the top of each hour for the previous hour's data
+     * So we return the most recently completed statistics (previous hour)
+     */
+    fun retrieveGithubRepoLanguageStatisticHourly(): List<GithubRepoLanguageStatisticHourly> {
+        val now = LocalDateTime.now()
+        val currentHourStart = now.truncatedTo(ChronoUnit.HOURS)
+        val previousHourStart = currentHourStart.minusHours(1)
+        val previousHourEnd = currentHourStart
+
+        val startTime = previousHourStart.toInstant(ZoneOffset.UTC)
+        val endTime = previousHourEnd.toInstant(ZoneOffset.UTC)
+
+        return githubRepoLanguageStatisticHourlyRepository.findAllByStatisticHourBetween(startTime, endTime)
+    }
+
+    /**
      * Generates hourly topic and language statistics from repository metadata
      *
      * @param targetTime Target time (defaults to previous hour)

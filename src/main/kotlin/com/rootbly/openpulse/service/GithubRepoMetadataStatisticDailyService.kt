@@ -50,6 +50,23 @@ class GithubRepoMetadataStatisticDailyService(
     }
 
     /**
+     * Retrieves yesterday's daily language statistics
+     * Daily statistics are generated at 00:00 for the previous day's data
+     * So we return the most recently completed statistics (yesterday)
+     */
+    fun retrieveGithubRepoLanguageStatisticDaily(): List<GithubRepoLanguageStatisticDaily> {
+        val now = LocalDateTime.now()
+        val todayStart = now.truncatedTo(ChronoUnit.DAYS)
+        val yesterdayStart = todayStart.minusDays(1)
+        val yesterdayEnd = todayStart
+
+        val startTime = yesterdayStart.toInstant(ZoneOffset.UTC)
+        val endTime = yesterdayEnd.toInstant(ZoneOffset.UTC)
+
+        return githubRepoLanguageStatisticDailyRepository.findAllByStatisticDayBetween(startTime, endTime)
+    }
+
+    /**
      * Generates daily topic and language statistics from repository metadata
      *
      * @param targetTime Target time (defaults to previous day)
