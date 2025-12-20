@@ -1,7 +1,7 @@
 package com.rootbly.openpulse.service
 
 import com.rootbly.openpulse.common.TopicCategories
-import com.rootbly.openpulse.entity.GithubRepoTopicStatisticHourly
+import com.rootbly.openpulse.entity.TopicStatistic
 import org.springframework.stereotype.Service
 import kotlin.collections.distinctBy
 
@@ -46,13 +46,13 @@ class TopicCategorizationService {
     
     /**
      * 토픽 통계와 함께 카테고리 분석
-     * 
+     *
      * @param topicStats 토픽 통계 리스트
      * @return 카테고리별 통계 정보
      */
-    fun analyzeCategoryStats(topicStats: List<GithubRepoTopicStatisticHourly>): List<CategoryStats> {
-        val categoryMap = mutableMapOf<String, MutableList<GithubRepoTopicStatisticHourly>>()
-        val otherStats = mutableListOf<GithubRepoTopicStatisticHourly>()
+    fun analyzeCategoryStats(topicStats: List<TopicStatistic>): List<CategoryStats> {
+        val categoryMap = mutableMapOf<String, MutableList<TopicStatistic>>()
+        val otherStats = mutableListOf<TopicStatistic>()
         
         topicStats.forEach { stat ->
             if (shouldExclude(stat.topic)) {

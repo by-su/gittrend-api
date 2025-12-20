@@ -24,10 +24,10 @@ class GithubRepoTopicStatisticDaily(
     val id: Long? = null,
 
     @Column(name = "topic", nullable = false)
-    val topic: String,
+    override val topic: String,
 
     @Column(name = "repo_count", nullable = false)
-    val repoCount: Int,
+    override val repoCount: Int,
 
     @Column(name = "statistic_day", nullable = false)
     val statisticDay: Instant,
@@ -37,7 +37,7 @@ class GithubRepoTopicStatisticDaily(
 
     @Column(name = "updated_at", nullable = false)
     val updatedAt: Instant,
-) {
+) : TopicStatistic {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
