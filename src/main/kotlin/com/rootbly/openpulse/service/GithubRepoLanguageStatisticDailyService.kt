@@ -28,7 +28,15 @@ class GithubRepoLanguageStatisticDailyService(
      * Retrieves yesterday's daily language statistics
      */
     fun retrieveGithubRepoLanguageStatisticDaily(): List<GithubRepoLanguageStatisticDaily> {
-        throw NotImplementedError("To be implemented")
+        val now = LocalDateTime.now()
+        val todayStart = now.truncatedTo(java.time.temporal.ChronoUnit.DAYS)
+        val yesterdayStart = todayStart.minusDays(1)
+        val yesterdayEnd = todayStart
+
+        val startTime = yesterdayStart.toInstant(java.time.ZoneOffset.UTC)
+        val endTime = yesterdayEnd.toInstant(java.time.ZoneOffset.UTC)
+
+        return githubRepoLanguageStatisticDailyRepository.findAllByStatisticDayBetween(startTime, endTime)
     }
 
     /**
@@ -36,6 +44,49 @@ class GithubRepoLanguageStatisticDailyService(
      */
     @Transactional
     fun generateDailyRepoLanguageStatistic(targetTime: LocalDateTime = LocalDateTime.now().minusDays(1)) {
-        throw NotImplementedError("To be implemented")
+        val dayStart = targetTime.truncatedTo(java.time.temporal.ChronoUnit.DAYS)
+        val dayEnd = dayStart.plusDays(1)
+        val dayStartInstant = dayStart.toInstant(java.time.ZoneOffset.UTC)
+
+        logger.info("Generating repo language statistics for day: $dayStart to $dayEnd")
+
+        val repos = githubRepoMetadataRepository.findByUpdatedAtBetween(dayStart, dayEnd)
+        logger.info("Found ${repos.size} repositories created in the time range")
+
+        if (repos.isEmpty()) {
+            logger.info("No repositories found in the time range, skipping statistics generation")
+            return
+        }
+
+        generateLanguageStatistics(repos, dayStartInstant)
+    }
+
+    /**
+     * Generates daily language statistics
+     */
+    private fun generateLanguageStatistics(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticDay: java.time.Instant) {
+        val languageCounts = mutableMapOf<String, Int>()
+
+        repos.forEach { repo ->
+            repo.language?.takeIf { it.isNotEmpty() }?.let { language ->
+                languageCounts[language] = languageCounts.getOrDefault(language, 0) + 1
+            }
+        }
+
+        logger.info("Found ${languageCounts.size} unique languages")
+
+        val now = java.time.Instant.now()
+        val entities = languageCounts.map { (language, count) ->
+            GithubRepoLanguageStatisticDaily(
+                language = language,
+                repoCount = count,
+                statisticDay = statisticDay,
+                createdAt = now,
+                updatedAt = now
+            )
+        }
+
+        githubRepoLanguageStatisticDailyRepository.saveAll(entities)
+        logger.info("Saved ${entities.size} language statistics")
     }
 }
