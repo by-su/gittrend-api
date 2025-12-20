@@ -7,8 +7,8 @@ spring:
   jpa:
     properties:
       hibernate:
-#        show_sql: true  # SQL 쿼리 출력
-#        format_sql: true  # SQL 포맷팅
+        show_sql: true  # SQL 쿼리 출력
+        format_sql: true  # SQL 포맷팅
         dialect: org.hibernate.dialect.MySQLDialect
         jdbc:
           batch_size: 30
@@ -27,6 +27,11 @@ logging:
   level:
     org.hibernate.engine.jdbc.batch.internal: DEBUG
     org.hibernate.stat: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE  # 이게 핵심
+
+cors:
+  origins: >
+    http://localhost:3000
 
 github:
   tokens: >
