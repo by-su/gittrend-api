@@ -1,7 +1,9 @@
 package com.rootbly.openpulse.scheduler
 
-import com.rootbly.openpulse.service.GithubRepoMetadataStatisticDailyService
-import com.rootbly.openpulse.service.GithubRepoMetadataStatisticHourlyService
+import com.rootbly.openpulse.service.GithubRepoTopicStatisticHourlyService
+import com.rootbly.openpulse.service.GithubRepoLanguageStatisticHourlyService
+import com.rootbly.openpulse.service.GithubRepoTopicStatisticDailyService
+import com.rootbly.openpulse.service.GithubRepoLanguageStatisticDailyService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Component
  */
 @Component
 class GithubRepoMetadataStatisticScheduler(
-    private val githubRepoMetadataStatisticHourlyService: GithubRepoMetadataStatisticHourlyService,
-    private val githubRepoMetadataStatisticDailyService: GithubRepoMetadataStatisticDailyService
+    private val githubRepoTopicStatisticHourlyService: GithubRepoTopicStatisticHourlyService,
+    private val githubRepoLanguageStatisticHourlyService: GithubRepoLanguageStatisticHourlyService,
+    private val githubRepoTopicStatisticDailyService: GithubRepoTopicStatisticDailyService,
+    private val githubRepoLanguageStatisticDailyService: GithubRepoLanguageStatisticDailyService
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -24,7 +28,8 @@ class GithubRepoMetadataStatisticScheduler(
     fun generateGithubRepoMetadataStatisticsHourly() {
         logger.info("Starting hourly GitHub repository metadata statistics generation")
         try {
-            githubRepoMetadataStatisticHourlyService.generateHourlyRepoMetadataStatistic()
+            githubRepoTopicStatisticHourlyService.generateHourlyRepoTopicStatistic()
+            githubRepoLanguageStatisticHourlyService.generateHourlyRepoLanguageStatistic()
             logger.info("Successfully completed hourly repo metadata statistics generation")
         } catch (e: Exception) {
             logger.error("Failed to generate hourly repo metadata statistics", e)
@@ -38,7 +43,8 @@ class GithubRepoMetadataStatisticScheduler(
     fun generateGithubRepoMetadataStatisticsDaily() {
         logger.info("Starting daily GitHub repository metadata statistics generation")
         try {
-            githubRepoMetadataStatisticDailyService.generateDailyRepoMetadataStatistic()
+            githubRepoTopicStatisticDailyService.generateDailyRepoTopicStatistic()
+            githubRepoLanguageStatisticDailyService.generateDailyRepoLanguageStatistic()
             logger.info("Successfully completed daily repo metadata statistics generation")
         } catch (e: Exception) {
             logger.error("Failed to generate daily repo metadata statistics", e)
