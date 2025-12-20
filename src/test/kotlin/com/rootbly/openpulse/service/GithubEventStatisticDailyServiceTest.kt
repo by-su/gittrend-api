@@ -221,7 +221,7 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
     }
 
     @Test
-    fun `retrieveDaily should return statistics from previous day window`() {
+    fun `retrieveDaily should return statistics from previous day window based on statisticDay`() {
         // Given
         val currentTime = LocalDateTime.now()
         val dayStart = currentTime.truncatedTo(ChronoUnit.DAYS)
@@ -229,23 +229,27 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
 
         val startTime = previousDayStart.toInstant(ZoneOffset.UTC)
         val endTime = dayStart.toInstant(ZoneOffset.UTC)
+        val now = Instant.now()
 
         val stat1 = GithubEventStatisticDailyFixture.create(
             eventType = "PushEvent",
             eventCount = 10,
-            createdAt = startTime.plus(1, ChronoUnit.HOURS)
+            statisticDay = startTime,
+            createdAt = now
         )
 
         val stat2 = GithubEventStatisticDailyFixture.create(
             eventType = "PullRequestEvent",
             eventCount = 5,
-            createdAt = startTime.plus(12, ChronoUnit.HOURS)
+            statisticDay = startTime,
+            createdAt = now
         )
 
         val stat3 = GithubEventStatisticDailyFixture.create(
             eventType = "IssueEvent",
             eventCount = 3,
-            createdAt = endTime.plus(1, ChronoUnit.HOURS)
+            statisticDay = endTime,
+            createdAt = now
         )
 
         dailyRepository.saveAll(listOf(stat1, stat2, stat3))
@@ -254,7 +258,7 @@ class GithubEventStatisticDailyServiceTest @Autowired constructor(
         val result = service.retrieveDaily()
 
         // Then
-        assertEquals(2, result.size, "Should return 2 statistics from previous day window")
+        assertEquals(2, result.size, "Should return 2 statistics from previous day window based on statisticDay")
         assertTrue(result.any { it.eventType == "PushEvent" }, "Should include PushEvent")
         assertTrue(result.any { it.eventType == "PullRequestEvent" }, "Should include PullRequestEvent")
         assertTrue(result.none { it.eventType == "IssueEvent" }, "Should not include IssueEvent from current day")

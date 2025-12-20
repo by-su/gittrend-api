@@ -65,6 +65,6 @@ class GithubEventStatisticDailyService(
         val startTime = previousDayStart.toInstant(ZoneOffset.UTC)
         val endTime = dayStart.toInstant(ZoneOffset.UTC)
 
-        return githubEventStatisticDailyRepository.findAllByCreatedAtBetween(startTime, endTime)
+        return githubEventStatisticDailyRepository.findAllByStatisticDayGreaterThanEqualAndStatisticDayLessThan(startTime, endTime)
     }
 }

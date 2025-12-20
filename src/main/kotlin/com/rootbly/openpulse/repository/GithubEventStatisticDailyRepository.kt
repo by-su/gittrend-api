@@ -7,4 +7,6 @@ import java.time.Instant
 interface GithubEventStatisticDailyRepository: JpaRepository<GithubEventStatisticDaily, Long> {
 
     fun findAllByCreatedAtBetween(startTime: Instant, endTime: Instant): List<GithubEventStatisticDaily>
+
+    fun findAllByStatisticDayGreaterThanEqualAndStatisticDayLessThan(startTime: Instant, endTime: Instant): List<GithubEventStatisticDaily>
 }
