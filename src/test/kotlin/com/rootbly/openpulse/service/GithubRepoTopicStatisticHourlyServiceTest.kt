@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 
 @SpringBootTest
 class GithubRepoTopicStatisticHourlyServiceTest @Autowired constructor(
-    private val service: GithubRepoMetadataStatisticHourlyService,
+    private val service: GithubRepoTopicStatisticHourlyService,
     private val repository: GithubRepoTopicStatisticHourlyRepository
 ) {
 

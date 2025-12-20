@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 
 @SpringBootTest
 class GithubRepoLanguageStatisticDailyServiceTest @Autowired constructor(
-    private val service: GithubRepoMetadataStatisticDailyService,
+    private val service: GithubRepoLanguageStatisticDailyService,
     private val repository: GithubRepoLanguageStatisticDailyRepository
 ) {
 
