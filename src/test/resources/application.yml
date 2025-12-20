@@ -22,3 +22,7 @@ github:
   tokens:
     - test-token-1
     - test-token-2
+
+openai:
+  api:
+    key: tt
