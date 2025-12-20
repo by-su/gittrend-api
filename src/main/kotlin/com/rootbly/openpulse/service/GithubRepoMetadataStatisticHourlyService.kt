@@ -93,7 +93,10 @@ class GithubRepoMetadataStatisticHourlyService(
     /**
      * Generates hourly topic statistics
      */
-    private fun generateTopicStatistics(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticHour: Instant) {
+    private fun generateTopicStatistics(
+        repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>,
+        statisticHour: Instant
+    ) {
         val topicCounts = mutableMapOf<String, Int>()
 
         repos.forEach { repo ->
@@ -137,7 +140,10 @@ class GithubRepoMetadataStatisticHourlyService(
     /**
      * Generates hourly language statistics
      */
-    private fun generateLanguageStatistic(repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>, statisticHour: Instant) {
+    private fun generateLanguageStatistic(
+        repos: List<com.rootbly.openpulse.entity.GithubRepoMetadata>,
+        statisticHour: Instant
+    ) {
         val languageCounts = mutableMapOf<String, Int>()
 
         repos.forEach { repo ->

@@ -14,7 +14,11 @@ logging:
   level:
     org.springframework.jdbc.core: DEBUG
 
+cors:
+  origins:
+    - http://localhost:3000
+
 github:
-  tokens: > 
-    test-token-1
-    test-token-2
+  tokens:
+    - test-token-1
+    - test-token-2

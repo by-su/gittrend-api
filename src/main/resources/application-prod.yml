@@ -25,6 +25,10 @@ logging:
   level:
     root: info
 
+#cors:
+#  origins: >
+#    http://localhost:3000
+
 github:
   tokens:
     - ${GITHUB_TOKEN1}

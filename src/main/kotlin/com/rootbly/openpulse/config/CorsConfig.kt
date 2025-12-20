@@ -9,7 +9,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
 @Configuration
 class CorsConfig(
-    @Value("\${cors.origins}")
+    @Value("\${cors.origins:http://localhost:3000}")
     private val origins: List<String>
 ) {
 

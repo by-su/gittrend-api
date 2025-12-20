@@ -30,10 +30,10 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE  # 이게 핵심
 
 cors:
-  origins: >
-    http://localhost:3000
+  origins:
+    - http://localhost:3000
 
 github:
-  tokens: >
-    ${GITHUB_TOKEN1},
-    ${GITHUB_TOKEN2:}
+  tokens:
+    - ${GITHUB_TOKEN1}
+    - ${GITHUB_TOKEN2:}
