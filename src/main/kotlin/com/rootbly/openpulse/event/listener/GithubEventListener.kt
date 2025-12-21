@@ -18,7 +18,6 @@ class GithubEventListener(
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    @Async
     @EventListener
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     suspend fun handleMetadataFetch(event: GithubRepoMetadataFetchEvent) {

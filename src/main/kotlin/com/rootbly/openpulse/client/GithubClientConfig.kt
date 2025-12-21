@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.client
 
-import com.rootbly.openpulse.config.GithubProperties
+import com.rootbly.openpulse.common.config.GithubProperties
 import com.rootbly.openpulse.service.GithubTokenRotationService
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.EnableConfigurationProperties

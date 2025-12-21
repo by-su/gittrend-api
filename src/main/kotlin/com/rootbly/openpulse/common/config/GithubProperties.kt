@@ -1,4 +1,4 @@
-package com.rootbly.openpulse.config
+package com.rootbly.openpulse.common.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

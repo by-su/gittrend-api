@@ -1,4 +1,4 @@
-package com.rootbly.openpulse.common
+package com.rootbly.openpulse.common.constants
 
 /**
  * GitHub Topics 카테고리 정의

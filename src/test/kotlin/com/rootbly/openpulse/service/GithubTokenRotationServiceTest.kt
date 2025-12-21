@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.service
 
-import com.rootbly.openpulse.config.GithubProperties
+import com.rootbly.openpulse.common.config.GithubProperties
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

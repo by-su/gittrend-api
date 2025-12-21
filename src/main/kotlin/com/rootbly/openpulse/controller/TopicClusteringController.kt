@@ -1,6 +1,5 @@
 package com.rootbly.openpulse.controller
 
-import com.rootbly.openpulse.service.CategoryStats
 import com.rootbly.openpulse.service.GithubRepoTopicStatisticDailyService
 import com.rootbly.openpulse.service.GithubRepoTopicStatisticHourlyService
 import com.rootbly.openpulse.service.TopicCategorizationService
