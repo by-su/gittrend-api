@@ -1,7 +1,9 @@
 package com.rootbly.openpulse.event.processor
 
 import com.rootbly.openpulse.client.GithubEventClient
+import com.rootbly.openpulse.event.broadcast.GithubMetadataEventBroadcaster
 import com.rootbly.openpulse.event.channel.GithubEventChannel
+import com.rootbly.openpulse.payload.GithubMetadataStreamDto
 import com.rootbly.openpulse.service.GithubRepoMetadataService
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
@@ -19,6 +21,7 @@ class GithubEventProcessor(
     private val githubEventChannel: GithubEventChannel,
     private val githubEventClient: GithubEventClient,
     private val githubRepoMetadataService: GithubRepoMetadataService,
+    private val metadataEventBroadcaster: GithubMetadataEventBroadcaster,
     @Value("\${github.metadata.concurrent-workers:20}")
     private val concurrentWorkers: Int
 ) {
@@ -40,6 +43,10 @@ class GithubEventProcessor(
             try {
                 val response = githubEventClient.fetchRepoMetadata(event.repoName)
                 githubRepoMetadataService.save(response)
+
+                // Broadcast update to all connected clients
+                val streamDto = GithubMetadataStreamDto.from(response)
+                metadataEventBroadcaster.broadcast(streamDto)
             } catch (e: Exception) {
                 logger.error("Worker $workerId: Failed to process event for ${event.repoName}", e)
             }

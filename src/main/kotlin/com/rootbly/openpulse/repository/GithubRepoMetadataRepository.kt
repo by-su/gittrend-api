@@ -10,6 +10,11 @@ import java.time.LocalDateTime
 
 interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> {
 
+    /**
+     * Find the most recently updated repositories
+     */
+    fun findTop30ByOrderByUpdatedAtDesc(): List<GithubRepoMetadata>
+
     @Modifying
     @Query(value = """
         INSERT INTO github_repo_metadata (

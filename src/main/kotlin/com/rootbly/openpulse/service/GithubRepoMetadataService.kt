@@ -1,8 +1,10 @@
 package com.rootbly.openpulse.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rootbly.openpulse.entity.GithubRepoMetadata
 import com.rootbly.openpulse.payload.GithubRepoResponse
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
