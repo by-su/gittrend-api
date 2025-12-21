@@ -37,3 +37,7 @@ github:
   tokens:
     - ${GITHUB_TOKEN1}
     - ${GITHUB_TOKEN2:}
+
+scheduler:
+  github-events:
+    cron: "0 0 0 * * *"

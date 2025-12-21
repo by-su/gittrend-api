@@ -22,3 +22,7 @@ github:
   tokens:
     - test-token-1
     - test-token-2
+
+scheduler:
+  github-events:
+    cron: "-"  # 테스트 환경에서는 스케줄러 비활성화
