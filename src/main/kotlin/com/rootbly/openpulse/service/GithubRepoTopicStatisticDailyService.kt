@@ -1,6 +1,8 @@
 package com.rootbly.openpulse.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rootbly.openpulse.common.util.JsonParsingUtil
+import com.rootbly.openpulse.common.util.TimeRangeCalculator
 import com.rootbly.openpulse.entity.GithubRepoTopicStatisticDaily
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import com.rootbly.openpulse.repository.GithubRepoTopicStatisticDailyRepository
@@ -28,15 +30,8 @@ class GithubRepoTopicStatisticDailyService(
      * Retrieves yesterday's daily topic statistics
      */
     fun retrieveGithubRepoTopicStatisticDaily(): List<GithubRepoTopicStatisticDaily> {
-        val now = LocalDateTime.now()
-        val todayStart = now.truncatedTo(java.time.temporal.ChronoUnit.DAYS)
-        val yesterdayStart = todayStart.minusDays(1)
-        val yesterdayEnd = todayStart
-
-        val startTime = yesterdayStart.toInstant(java.time.ZoneOffset.UTC)
-        val endTime = yesterdayEnd.toInstant(java.time.ZoneOffset.UTC)
-
-        return githubRepoTopicStatisticDailyRepository.findAllByStatisticDayBetween(startTime, endTime)
+        val timeRange = TimeRangeCalculator.getPreviousDayRange()
+        return githubRepoTopicStatisticDailyRepository.findAllByStatisticDayBetween(timeRange.start, timeRange.end)
     }
 
     /**
@@ -44,9 +39,8 @@ class GithubRepoTopicStatisticDailyService(
      */
     @Transactional
     fun generateDailyRepoTopicStatistic(targetTime: LocalDateTime = LocalDateTime.now().minusDays(1)) {
-        val dayStart = targetTime.truncatedTo(java.time.temporal.ChronoUnit.DAYS)
-        val dayEnd = dayStart.plusDays(1)
-        val dayStartInstant = dayStart.toInstant(java.time.ZoneOffset.UTC)
+        val (dayStart, dayEnd) = TimeRangeCalculator.getDayRange(targetTime)
+        val dayStartInstant = TimeRangeCalculator.toInstant(dayStart)
 
         logger.info("Generating repo topic statistics for day: $dayStart to $dayEnd")
 
@@ -69,21 +63,9 @@ class GithubRepoTopicStatisticDailyService(
 
         repos.forEach { repo ->
             if (!repo.topics.isNullOrEmpty()) {
-                try {
-                    // MySQL JSON column may return double-encoded JSON string
-                    var topicsJson = repo.topics!!
-
-                    // If the value starts and ends with quotes, it's double-encoded, so decode once
-                    if (topicsJson.startsWith("\"") && topicsJson.endsWith("\"")) {
-                        topicsJson = objectMapper.readValue(topicsJson, String::class.java)
-                    }
-
-                    val topics = objectMapper.readValue(topicsJson, object : com.fasterxml.jackson.core.type.TypeReference<List<String>>() {})
-                    topics.forEach { topic ->
-                        topicCounts[topic] = topicCounts.getOrDefault(topic, 0) + 1
-                    }
-                } catch (e: Exception) {
-                    logger.warn("Failed to parse topics JSON for repo ${repo.repoId}. Topics value: '${repo.topics}', Error: ${e.message}")
+                val topics = JsonParsingUtil.parseTopics(repo.topics!!, objectMapper)
+                topics.forEach { topic ->
+                    topicCounts[topic] = topicCounts.getOrDefault(topic, 0) + 1
                 }
             }
         }

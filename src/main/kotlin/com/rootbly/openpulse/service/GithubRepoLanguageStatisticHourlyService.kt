@@ -1,6 +1,7 @@
 package com.rootbly.openpulse.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rootbly.openpulse.common.util.TimeRangeCalculator
 import com.rootbly.openpulse.entity.GithubRepoLanguageStatisticHourly
 import com.rootbly.openpulse.repository.GithubRepoLanguageStatisticHourlyRepository
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
@@ -28,15 +29,8 @@ class GithubRepoLanguageStatisticHourlyService(
      * Retrieves previous hour's language statistics
      */
     fun retrieveGithubRepoLanguageStatisticHourly(): List<GithubRepoLanguageStatisticHourly> {
-        val now = LocalDateTime.now()
-        val currentHourStart = now.truncatedTo(java.time.temporal.ChronoUnit.HOURS)
-        val previousHourStart = currentHourStart.minusHours(1)
-        val previousHourEnd = currentHourStart
-
-        val startTime = previousHourStart.toInstant(java.time.ZoneOffset.UTC)
-        val endTime = previousHourEnd.toInstant(java.time.ZoneOffset.UTC)
-
-        return githubRepoLanguageStatisticHourlyRepository.findAllByStatisticHourBetween(startTime, endTime)
+        val timeRange = TimeRangeCalculator.getPreviousHourRange()
+        return githubRepoLanguageStatisticHourlyRepository.findAllByStatisticHourBetween(timeRange.start, timeRange.end)
     }
 
     /**
@@ -44,9 +38,8 @@ class GithubRepoLanguageStatisticHourlyService(
      */
     @Transactional
     fun generateHourlyRepoLanguageStatistic(targetTime: LocalDateTime = LocalDateTime.now().minusHours(1)) {
-        val hourStart = targetTime.truncatedTo(java.time.temporal.ChronoUnit.HOURS)
-        val hourEnd = hourStart.plusHours(1)
-        val hourStartInstant = hourStart.toInstant(java.time.ZoneOffset.UTC)
+        val (hourStart, hourEnd) = TimeRangeCalculator.getHourRange(targetTime)
+        val hourStartInstant = TimeRangeCalculator.toInstant(hourStart)
 
         logger.info("Generating repo language statistics for hour: $hourStart to $hourEnd")
 

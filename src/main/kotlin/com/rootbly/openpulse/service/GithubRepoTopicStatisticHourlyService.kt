@@ -1,6 +1,8 @@
 package com.rootbly.openpulse.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rootbly.openpulse.common.util.JsonParsingUtil
+import com.rootbly.openpulse.common.util.TimeRangeCalculator
 import com.rootbly.openpulse.entity.GithubRepoTopicStatisticHourly
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import com.rootbly.openpulse.repository.GithubRepoTopicStatisticHourlyRepository
@@ -28,15 +30,8 @@ class GithubRepoTopicStatisticHourlyService(
      * Retrieves previous hour's topic statistics
      */
     fun retrieveGithubRepoTopicStatisticHourly(): List<GithubRepoTopicStatisticHourly> {
-        val now = LocalDateTime.now()
-        val currentHourStart = now.truncatedTo(java.time.temporal.ChronoUnit.HOURS)
-        val previousHourStart = currentHourStart.minusHours(1)
-        val previousHourEnd = currentHourStart
-
-        val startTime = previousHourStart.toInstant(java.time.ZoneOffset.UTC)
-        val endTime = previousHourEnd.toInstant(java.time.ZoneOffset.UTC)
-
-        return githubRepoTopicStatisticHourlyRepository.findAllByStatisticHourBetween(startTime, endTime)
+        val timeRange = TimeRangeCalculator.getPreviousHourRange()
+        return githubRepoTopicStatisticHourlyRepository.findAllByStatisticHourBetween(timeRange.start, timeRange.end)
     }
 
     /**
@@ -44,9 +39,8 @@ class GithubRepoTopicStatisticHourlyService(
      */
     @Transactional
     fun generateHourlyRepoTopicStatistic(targetTime: LocalDateTime = LocalDateTime.now().minusHours(1)) {
-        val hourStart = targetTime.truncatedTo(java.time.temporal.ChronoUnit.HOURS)
-        val hourEnd = hourStart.plusHours(1)
-        val hourStartInstant = hourStart.toInstant(java.time.ZoneOffset.UTC)
+        val (hourStart, hourEnd) = TimeRangeCalculator.getHourRange(targetTime)
+        val hourStartInstant = TimeRangeCalculator.toInstant(hourStart)
 
         logger.info("Generating repo topic statistics for hour: $hourStart to $hourEnd")
 
@@ -69,21 +63,9 @@ class GithubRepoTopicStatisticHourlyService(
 
         repos.forEach { repo ->
             if (!repo.topics.isNullOrEmpty()) {
-                try {
-                    // MySQL JSON column may return double-encoded JSON string
-                    var topicsJson = repo.topics!!
-
-                    // If the value starts and ends with quotes, it's double-encoded, so decode once
-                    if (topicsJson.startsWith("\"") && topicsJson.endsWith("\"")) {
-                        topicsJson = objectMapper.readValue(topicsJson, String::class.java)
-                    }
-
-                    val topics = objectMapper.readValue(topicsJson, object : com.fasterxml.jackson.core.type.TypeReference<List<String>>() {})
-                    topics.forEach { topic ->
-                        topicCounts[topic] = topicCounts.getOrDefault(topic, 0) + 1
-                    }
-                } catch (e: Exception) {
-                    logger.warn("Failed to parse topics JSON for repo ${repo.repoId}. Topics value: '${repo.topics}', Error: ${e.message}")
+                val topics = JsonParsingUtil.parseTopics(repo.topics!!, objectMapper)
+                topics.forEach { topic ->
+                    topicCounts[topic] = topicCounts.getOrDefault(topic, 0) + 1
                 }
             }
         }

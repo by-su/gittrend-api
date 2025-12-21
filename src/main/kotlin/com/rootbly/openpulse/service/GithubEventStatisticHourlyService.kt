@@ -1,5 +1,6 @@
 package com.rootbly.openpulse.service
 
+import com.rootbly.openpulse.common.util.TimeRangeCalculator
 import com.rootbly.openpulse.entity.GithubEventStatisticHourly
 import com.rootbly.openpulse.repository.GithubEventRepository
 import com.rootbly.openpulse.repository.GithubEventStatisticsHourlyRepository
@@ -7,7 +8,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 /**
@@ -31,8 +31,8 @@ class GithubEventStatisticHourlyService(
      */
     @Transactional
     fun generateHourlyEventStatistics(targetHour: LocalDateTime = LocalDateTime.now()) {
-        val hourStart = targetHour.truncatedTo(ChronoUnit.HOURS)
-        val hourStartInstant = hourStart.toInstant(ZoneOffset.UTC).minus(1, ChronoUnit.HOURS)
+        val (hourStart, _) = TimeRangeCalculator.getHourRange(targetHour)
+        val hourStartInstant = TimeRangeCalculator.toInstant(hourStart).minus(1, ChronoUnit.HOURS)
 
         val hourEndInstant = hourStartInstant.plus(1, ChronoUnit.HOURS)
 
@@ -60,13 +60,7 @@ class GithubEventStatisticHourlyService(
      * @return List of event type counts for the previous hour
      */
     fun retrieveGithubEventStatisticHourly(): List<GithubEventStatisticHourly> {
-        val currentTime = LocalDateTime.now()
-        val hourStart = currentTime.truncatedTo(ChronoUnit.HOURS)
-        val previousHourStart = hourStart.minusHours(1)
-
-        val startTime = previousHourStart.toInstant(ZoneOffset.UTC)
-        val endTime = hourStart.toInstant(ZoneOffset.UTC)
-
-        return githubEventStatisticsHourlyRepository.findAllByCreatedAtBetween(startTime, endTime)
+        val timeRange = TimeRangeCalculator.getPreviousHourRange()
+        return githubEventStatisticsHourlyRepository.findAllByCreatedAtBetween(timeRange.start, timeRange.end)
     }
 }

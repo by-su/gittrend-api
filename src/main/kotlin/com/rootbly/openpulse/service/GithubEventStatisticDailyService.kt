@@ -1,5 +1,6 @@
 package com.rootbly.openpulse.service
 
+import com.rootbly.openpulse.common.util.TimeRangeCalculator
 import com.rootbly.openpulse.entity.GithubEventStatisticDaily
 import com.rootbly.openpulse.repository.GithubEventStatisticDailyRepository
 import com.rootbly.openpulse.repository.GithubEventStatisticsHourlyRepository
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 /**
@@ -28,8 +28,8 @@ class GithubEventStatisticDailyService(
      */
     @Transactional
     fun generateDailyEventStatistic(targetDay: LocalDateTime = LocalDateTime.now().minusDays(1)) {
-        val dayStart = targetDay.truncatedTo(ChronoUnit.DAYS)
-        val dayStartInstant = dayStart.toInstant(ZoneOffset.UTC)
+        val (dayStart, _) = TimeRangeCalculator.getDayRange(targetDay)
+        val dayStartInstant = TimeRangeCalculator.toInstant(dayStart)
 
         val dayEndInstant = dayStartInstant.plus(1, ChronoUnit.DAYS)
 
@@ -58,13 +58,7 @@ class GithubEventStatisticDailyService(
      * @return List of event type counts for the previous day
      */
     fun retrieveDaily(): List<GithubEventStatisticDaily> {
-        val currentTime = LocalDateTime.now()
-        val dayStart = currentTime.truncatedTo(ChronoUnit.DAYS)
-        val previousDayStart = dayStart.minusDays(1)
-
-        val startTime = previousDayStart.toInstant(ZoneOffset.UTC)
-        val endTime = dayStart.toInstant(ZoneOffset.UTC)
-
-        return githubEventStatisticDailyRepository.findAllByStatisticDayGreaterThanEqualAndStatisticDayLessThan(startTime, endTime)
+        val timeRange = TimeRangeCalculator.getPreviousDayRange()
+        return githubEventStatisticDailyRepository.findAllByStatisticDayGreaterThanEqualAndStatisticDayLessThan(timeRange.start, timeRange.end)
     }
 }

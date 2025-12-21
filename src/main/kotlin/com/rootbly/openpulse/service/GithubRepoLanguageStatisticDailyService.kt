@@ -1,6 +1,7 @@
 package com.rootbly.openpulse.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rootbly.openpulse.common.util.TimeRangeCalculator
 import com.rootbly.openpulse.entity.GithubRepoLanguageStatisticDaily
 import com.rootbly.openpulse.repository.GithubRepoLanguageStatisticDailyRepository
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
@@ -28,15 +29,8 @@ class GithubRepoLanguageStatisticDailyService(
      * Retrieves yesterday's daily language statistics
      */
     fun retrieveGithubRepoLanguageStatisticDaily(): List<GithubRepoLanguageStatisticDaily> {
-        val now = LocalDateTime.now()
-        val todayStart = now.truncatedTo(java.time.temporal.ChronoUnit.DAYS)
-        val yesterdayStart = todayStart.minusDays(1)
-        val yesterdayEnd = todayStart
-
-        val startTime = yesterdayStart.toInstant(java.time.ZoneOffset.UTC)
-        val endTime = yesterdayEnd.toInstant(java.time.ZoneOffset.UTC)
-
-        return githubRepoLanguageStatisticDailyRepository.findAllByStatisticDayBetween(startTime, endTime)
+        val timeRange = TimeRangeCalculator.getPreviousDayRange()
+        return githubRepoLanguageStatisticDailyRepository.findAllByStatisticDayBetween(timeRange.start, timeRange.end)
     }
 
     /**
@@ -44,9 +38,8 @@ class GithubRepoLanguageStatisticDailyService(
      */
     @Transactional
     fun generateDailyRepoLanguageStatistic(targetTime: LocalDateTime = LocalDateTime.now().minusDays(1)) {
-        val dayStart = targetTime.truncatedTo(java.time.temporal.ChronoUnit.DAYS)
-        val dayEnd = dayStart.plusDays(1)
-        val dayStartInstant = dayStart.toInstant(java.time.ZoneOffset.UTC)
+        val (dayStart, dayEnd) = TimeRangeCalculator.getDayRange(targetTime)
+        val dayStartInstant = TimeRangeCalculator.toInstant(dayStart)
 
         logger.info("Generating repo language statistics for day: $dayStart to $dayEnd")
 
