@@ -1,29 +1,29 @@
 package com.rootbly.openpulse.common.constants
 
 /**
- * GitHub Topics 카테고리 정의
- * 실제 데이터 분석 기반으로 17개 주요 카테고리 구성
+ * GitHub Topics category definitions
+ * 17 major categories based on actual data analysis
  */
 object TopicCategories {
 
     /**
-     * 카테고리별 키워드 매핑
-     * 우선순위: 위에서 아래로 (먼저 매칭되는 카테고리가 선택됨)
+     * Keyword mapping by category
+     * Priority: top to bottom (first matching category is selected)
      */
     val CATEGORY_KEYWORDS = mapOf(
-        // 1. AI & Machine Learning (가장 구체적인 AI 관련)
+        // 1. AI & Machine Learning (most specific AI-related)
         "AI & Machine Learning" to listOf(
             // LLM
             "llm", "gpt", "gpt-4o", "chatgpt", "claude", "claude-ai", "claude-code", "claude-desktop",
             "gemini", "gemini-ai", "gemini-api", "anthropic", "openai", "openai-api",
             "ollama", "llama", "llama3", "deepseek", "mistral", "qwen", "qwen3",
-            // AI 일반
+            // AI General
             "ai", "artificial-intelligence", "machine-learning", "ml",
             "deep-learning", "neural-network", "neural-networks", "deep-neural-networks",
             "convolutional-neural-networks", "cnn", "lstm",
-            // 프레임워크
+            // Frameworks
             "pytorch", "tensorflow", "keras", "transformers", "huggingface",
-            // 기술
+            // Technologies
             "nlp", "natural-language-processing", "computer-vision", "cv",
             "reinforcement-learning", "embeddings", "bert", "yolo",
             "sentiment-analysis", "text-classification", "image-classification",
@@ -45,7 +45,7 @@ object TopicCategories {
             "model-training", "fine-tuning", "onnx", "mlx", "mediapipe", "mlflow"
         ),
 
-        // 2. AI Tools & Integration (AI 활용 도구)
+        // 2. AI Tools & Integration (AI utilization tools)
         "AI Tools & Integration" to listOf(
             // Agent
             "ai-agent", "ai-agents", "agent", "agents", "agentic", "agentic-ai",
@@ -60,12 +60,12 @@ object TopicCategories {
             "mcp-servers", "mcp-gateway", "mcp-host", "mcp-clients",
             "model-context-protocol-servers", "model-context-protocol-server",
             "openrouter", "mistral",
-            // AI 도구
+            // AI Tools
             "ai-tools", "ai-assistant", "ai-chatbot", "chatbot", "chatbots",
             "prompt-engineering", "prompt", "prompts", "conversational-ai",
             "ai-integration", "ai-powered", "ai-memory",
             "context-engineering", "system-prompts", "prompting",
-            // 평가/운영
+            // Evaluation/Operations
             "llm-evaluation", "llm-inference", "llmops", "mlops", "aiops",
             "ai-integration", "semantic-search", "vector-search", "vector-database",
             "vector", "chromadb", "pinecone", "faiss", "qdrant", "milvus",
@@ -108,29 +108,29 @@ object TopicCategories {
 
         // 4. Web Development
         "Web Development" to listOf(
-            // React 생태계
+            // React Ecosystem
             "react", "reactjs", "react-native", "react-hooks", "react-router",
             "react-router-dom", "react-redux", "react-query", "react-bootstrap",
             "react-components", "react-component", "react-three-fiber",
             "react-template", "react19", "create-react-app",
             "nextjs", "nextjs14", "nextjs15", "nextjs16", "nextjs-template", "nextjs-typescript",
             "remix",
-            // Vue 생태계
+            // Vue Ecosystem
             "vue", "vuejs", "vue3", "vue3-composition-api", "nuxt", "nuxt3", "sveltekit", "svelte5",
-            // 기타 프레임워크
+            // Other Frameworks
             "angular", "svelte", "astro", "astrojs", "solidjs",
-            // 기본
+            // Basics
             "html", "html5", "html-css", "html-css-javascript",
             "css", "css3", "css-lang", "css-language", "css-modules",
-            // CSS 프레임워크
+            // CSS Frameworks
             "tailwind", "tailwindcss", "tailwind-css", "tailwindcss-v4", "bootstrap", "bootstrap5", "sass", "scss",
             "material-design", "material-ui", "material3", "shadcn-ui", "shadcn", "daisyui",
             "styled-components", "ant-design", "antd", "chakra-ui", "heroui",
             "css-framework",
-            // 도구
+            // Tools
             "vite", "webpack", "rollup", "bun", "pnpm", "npm", "npm-package",
             "turborepo", "yarn",
-            // 일반
+            // General
             "web", "web-development", "web-app", "webapp", "website",
             "frontend", "frontend-development", "backend", "backend-development",
             "fullstack", "full-stack", "ssr", "pwa", "spa", "single-page-app",
@@ -139,14 +139,14 @@ object TopicCategories {
             "web-components", "webcomponents", "web-dashboard",
             // UI/UX
             "ui-design", "dark-mode", "dark-theme",
-            // 프레임워크
+            // Frameworks
             "express", "expressjs", "fastapi", "fastify", "flask", "flask-api", "flask-application",
             "django", "django-rest-framework", "django-admin", "laravel", "laravel-package", "laravel-nova",
             "spring-boot", "springboot", "java-spring-boot", "springboot2",
             "spring", "spring-cloud", "spring-security", "spring-mvc", "spring-ai",
             "nestjs", "phoenix", "symfony", "asp-net-core", "aspnetcore",
             "hono", "gin", "fiber", "echo",
-            // 기타
+            // Others
             "htmx", "alpinejs", "lucide-react", "recharts", "tanstack-query",
             "context-api", "zustand", "swr", "react-toastify",
             "jquery", "jquery-plugin", "ajax", "fetch", "fetch-api", "axios",
@@ -204,7 +204,7 @@ object TopicCategories {
 
         // 6. DevOps & Infrastructure
         "DevOps & Infrastructure" to listOf(
-            // 컨테이너
+            // Containers
             "docker", "docker-compose", "docker-image", "docker-container", "docker-swarm",
             "dockerfile", "dockerhub", "docker-registry",
             "kubernetes", "k8s", "k8s-at-home", "k3s", "helm", "helm-chart", "helm-charts",
@@ -220,14 +220,14 @@ object TopicCategories {
             // IaC
             "terraform", "terraform-provider", "ansible",
             "infrastructure-as-code", "infrastructure",
-            // 모니터링
+            // Monitoring
             "monitoring", "observability", "prometheus", "grafana", "grafana-dashboard",
             "metrics", "logging", "telemetry", "tracing", "distributed-tracing",
             "opentelemetry", "apm", "datadog", "siem", "loki", "victoriametrics",
             "sentry", "crash-reporting", "error-monitoring",
             "splunk", "elk", "logstash", "kibana",
             "monitoring-tools", "monitoring-tool", "network-monitoring",
-            // 클라우드
+            // Cloud
             "cloud", "cloud-computing", "cloud-native", "serverless", "cloud-deployment",
             "cloud-security", "edge-computing", "multi-cloud",
             "aws", "aws-lambda", "aws-s3", "aws-ec2", "aws-sdk", "aws-dynamodb", "aws-bedrock",
@@ -239,41 +239,41 @@ object TopicCategories {
             "paas", "iaas", "saas",
             "openshift", "nomad", "consul", "vault", "hashicorp-vault", "hashicorp",
             "render-deployment",
-            // 오케스트레이션
+            // Orchestration
             "orchestration", "workflow", "workflows", "workflow-automation",
             "workflow-engine", "airflow", "apache-airflow", "n8n", "n8n-workflow",
             "temporal", "cadence", "dagster", "prefect", "luigi",
             "kestra", "argo", "argo-workflows",
-            // 서비스 메시
+            // Service Mesh
             "service-mesh", "istio", "linkerd", "consul", "envoy",
             "api-gateway", "gateway-api", "ingress-controller", "kong",
-            // 자동화
+            // Automation
             "automation", "devops-automation", "devops-tools",
             "ansible-role", "ansible-playbook", "playbook",
             "terraform-module", "terraform-provider",
             "pulumi", "crossplane",
-            // 스케일링
+            // Scaling
             "autoscaling", "load-balancer", "load-balancing", "high-availability",
             "fault-tolerance", "resiliency", "disaster-recovery",
-            // 네트워크
+            // Networking
             "networking", "network", "vpn", "vpn-manager", "dns", "dhcp",
             "proxy", "reverse-proxy", "nginx", "caddy", "traefik", "haproxy",
             "iptables", "firewall", "fail2ban", "security-groups",
             "vlan", "inter-vlan-routing", "ivr", "network-simulation",
             "network-analysis", "network-scanner",
-            // 가상화
+            // Virtualization
             "virtualization", "vm", "virtual-machine", "kvm", "qemu",
             "vmware", "virtualbox", "hypervisor", "esxi",
             "proxmox", "proxmox-ve", "lxc", "lxd",
-            // 백업/복구
+            // Backup/Recovery
             "backup", "restore", "recovery", "disaster-recovery",
             "snapshot", "replication", "data-replication", "sync",
-            // 시크릿 관리
+            // Secrets Management
             "secrets", "secrets-management", "secret", "vault",
             "environment-variables", "env", "dotenv", "config",
             "key-management", "certificate", "tls-certificate", "ssl", "pki",
             "acme", "letsencrypt", "x509",
-            // 플랫폼
+            // Platform
             "platform-engineering", "internal-tools", "backstage",
             // Linux/Unix
             "linux", "linux-kernel", "ubuntu", "debian", "centos", "rhel", "fedora",
@@ -281,7 +281,7 @@ object TopicCategories {
             "alpine", "alpine-linux", "busybox",
             "unix", "bsd", "freebsd", "openbsd", "osx", "macos",
             "openwrt", "talos-linux",
-            // 기타
+            // Others
             "deployment", "deploy", "configuration-management", "configuration",
             "baremetal", "bare-metal", "edge", "iot", "iiot",
             "homelab", "homelab-setup", "home-ops", "self-hosting",
@@ -307,16 +307,16 @@ object TopicCategories {
             // NoSQL
             "mongodb", "mongodb-atlas", "redis", "elasticsearch", "opensearch",
             "dynamodb", "clickhouse", "influxdb", "nosql",
-            // ORM/쿼리
+            // ORM/Query
             "prisma", "drizzle-orm", "drizzle", "orm", "sqlalchemy", "mongoose",
             "query-optimization", "gorm", "jpa", "spring-data-jpa",
-            // 벡터/임베딩
+            // Vector/Embedding
             "vector-database", "chromadb", "pinecone", "faiss", "qdrant", "milvus",
             "graph-database", "neo4j",
             // Data Warehouse
             "data-warehouse", "snowflake", "bigquery", "redshift",
             "clickhouse", "lakehouse", "iceberg", "databricks",
-            // 기타
+            // Others
             "s3", "aws-s3", "s3-bucket", "cloud-storage", "storage", "data-storage",
             "cache", "caching", "firestore", "firebase-realtime-database",
             "benchmark", "amd", "duckdb"
@@ -324,23 +324,23 @@ object TopicCategories {
 
         // 8. Data Science & Analytics
         "Data Science & Analytics" to listOf(
-            // 기본
+            // Basics
             "data-science", "data-analysis", "data-analytics", "analytics",
             "data-visualization", "visualization",
-            // 라이브러리
+            // Libraries
             "pandas", "pandas-dataframe", "pandas-python", "numpy", "ndarray",
             "matplotlib", "matplotlib-pyplot", "seaborn", "plotly",
             "scikit-learn", "scipy", "opencv", "opencv-python",
-            // 도구
+            // Tools
             "jupyter-notebook", "jupyter", "jupyterlab", "notebook",
             "streamlit", "streamlit-webapp", "streamlit-dashboard", "streamlit-application",
             "gradio", "tableau", "powerbi", "powerbi-report",
-            // 처리
+            // Processing
             "data-processing", "data-engineering", "data-pipelines", "data-pipeline",
             "etl", "etl-pipeline", "elt", "pipeline", "pipelines",
             "data-cleaning", "data-mining", "data-quality", "data-validation",
             "data-transformation", "data-augmentation",
-            // 통계/분석
+            // Statistics/Analysis
             "statistics", "exploratory-data-analysis", "eda",
             "feature-engineering", "feature-extraction",
             "regression", "logistic-regression", "linear-regression",
@@ -351,27 +351,27 @@ object TopicCategories {
             "recommender-system", "recommendation-system", "collaborative-filtering",
             "correlation-analysis", "pca", "pca-analysis",
             "decision-trees", "gradient-boosting", "ensemble-learning",
-            // 빅데이터
+            // Big Data
             "big-data", "bigdata", "bigquery", "redshift", "snowflake", "spark", "pyspark",
             "kafka", "apache-kafka", "kafka-producer", "kafka-consumer",
             "dbt", "duckdb", "dataops", "airflow", "apache-airflow",
             "hadoop", "hdfs", "flink",
-            // 데이터셋
+            // Datasets
             "dataset", "datasets", "dataframe", "ndarray", "arrow", "parquet",
             "tabular-data"
         ),
 
         // 9. Blockchain & Crypto
         "Blockchain & Crypto" to listOf(
-            // 블록체인
+            // Blockchain
             "blockchain", "blockchain-technology", "blockchain-game",
             "web3", "dapp", "defi",
-            // 체인
+            // Chains
             "ethereum", "eth", "ethereum-dapp", "ethereum-contract", "ethereum-api",
             "bitcoin", "btc", "bitcoin-cash", "solana", "bnb", "bsc", "bnb-chain",
             "litecoin", "evm", "optimism", "arbitrum", "polygon", "base",
             "cardano", "polkadot", "cosmos", "ripple", "tron", "ton",
-            // 기술
+            // Technologies
             "smart-contracts", "smart-contract", "smartcontract", "solidity",
             "hardhat", "truffle", "foundry", "anchor", "ganache",
             "nft", "token", "crypto-token", "erc20",
@@ -380,14 +380,14 @@ object TopicCategories {
             "defi", "dex", "flash-loan", "flashloan", "swap",
             "uniswap", "raydium", "meteora", "polymarket",
             "chainlink", "oracle",
-            // 도구/지갑
+            // Tools/Wallets
             "wallet", "crypto-wallet", "cold-wallet", "hardware-wallet", "wallet-security",
             "metamask", "metamask-wallet", "metamask-extension", "metamask-plugin",
             "metamask-snap", "metamask-bot", "metamask-desktop",
             "phantom-wallet", "phantom-wallet-api", "phantom-wallet-bot",
             "walletconnect", "exodus", "exodus-wallet", "exodus-api",
             "exodus-app", "exodus-payment",
-            // 거래/금융
+            // Trading/Finance
             "crypto", "cryptocurrency", "cryptocurrencies", "cryptocurrency-trading",
             "cryptocurrency-exchanges", "cash",
             "trading", "trading-bot", "crypto-trading", "crypto-bot",
@@ -396,33 +396,33 @@ object TopicCategories {
             "investment-strategies", "quantitative-trading",
             "binance", "binance-api", "protocol",
             "sniper-bot", "mevbots",
-            // 게임
+            // Games
             "blockchain-game", "crypto-game", "cryptocurrency-game", "ethereum-game",
             "play-to-earn",
-            // 기타
+            // Others
             "web3", "web3js", "dapp", "dapps", "etherscan", "ethersjs",
             "multisig", "proof-of-work", "consensus", "decentralization",
             "decentralized", "decentralized-ai",
             "memecoin", "coingecko",
-            // 게임
+            // Games
             "blockchain-game", "crypto-game", "cryptocurrency-game", "ethereum-game",
             "play-to-earn"
         ),
 
         // 10. Security & Hacking
         "Security & Hacking" to listOf(
-            // 보안 일반
+            // Security General
             "security", "cybersecurity", "cyber-security", "infosec",
             "security-tools", "security-tool", "security-research",
             "devsecops", "network-security", "cloud-security", "windows-security",
-            // 인증/암호화
+            // Authentication/Encryption
             "authentication", "authorization", "auth", "oauth", "oauth2",
             "2fa", "jwt", "oidc", "sso",
             "encryption", "cryptography", "aes", "sha256", "hash",
             "access-control", "active-directory", "iam", "identity",
             "user-authentication", "user-management", "permissions",
             "rbac",
-            // 공격/침투
+            // Attack/Penetration
             "hacking", "hack", "ethical-hacking", "pentesting", "penetration-testing",
             "pentest", "pentest-tool", "pentesting-tools",
             "exploit", "exploit-development", "vulnerability",
@@ -439,7 +439,7 @@ object TopicCategories {
             // Windows Security
             "windows-api", "windows-internals", "windows-malware", "windows-security",
             "windows-exploitation",
-            // 도구/기법
+            // Tools/Techniques
             "osint", "osint-tool", "osint-resources", "reconnaissance", "recon",
             "red-team", "redteam", "red-teaming", "blue-team", "blueteam",
             "offensive-security", "threat-intelligence", "threatintel", "threat-hunting",
@@ -447,28 +447,28 @@ object TopicCategories {
             "fuzzing", "phishing", "phishing-detection",
             "proxy", "vpn", "anonymity", "anonymous", "privacy", "privacy-tools", "privacy-protection",
             "tor", "censorship", "siem",
-            // 특정 도구
+            // Specific Tools
             "metasploit", "cobalt-strike", "nmap", "hydra", "suricata", "zeek", "frida",
             // MITRE
             "mitre-attack",
-            // 네트워크 보안
+            // Network Security
             "network-scanner", "network-monitoring", "network-analysis"
         ),
 
         // 11. Proxy & Network Tools
         "Proxy & Network Tools" to listOf(
-            // VPN/프록시
+            // VPN/Proxy
             "vpn", "proxy", "proxies", "proxy-server", "proxy-list",
             "proxy-scraper", "proxy-checker", "free-proxy", "free-proxy-list",
             "http-proxy", "https-proxy", "socks", "socks4", "socks4-proxy",
             "socks5", "socks5-proxy", "socks-proxy",
-            // 중국 도구
+            // Chinese Tools
             "shadowsocks", "v2ray", "v2rayn", "v2rayng", "vmess", "vless",
             "clash", "wireguard", "openvpn", "trojan",
-            // 네트워크
+            // Networking
             "networking", "network", "network-security", "dns", "dns-server",
             "firewall", "gateway", "reverse-proxy", "traefik", "nginx",
-            // 우회
+            // Bypass
             "gfw", "censorship", "china", "chinese-communist-party", "totalitarian",
             "falun-gong", "iran", "human-rights"
         ),
@@ -484,17 +484,17 @@ object TopicCategories {
             "discord", "discord-bot", "discordbot", "discord-js", "discord-py",
             "discord-api", "discord-bots", "discord-bot-framework",
             "discord-bot-template", "discord-bot-dashboard",
-            // 기타 플랫폼
+            // Other Platforms
             "chatbot", "chatbots", "ai-chatbot", "chatbot-development",
             "conversational-ai", "conversational-agents",
             "whatsapp", "whatsapp-api", "facebook", "twitter", "twitter-bot",
             "instagram", "instagram-api", "tiktok",
             "slack-bot", "slackbot",
-            // 자동화
+            // Automation
             "auto", "auto-clicker", "auto-farm", "game-bot", "game-cheat",
             "workflow-automation", "workflow-engine", "n8n", "n8n-workflow",
             "rss", "rss-feed", "rss-aggregator", "rss-reader", "rss-generator",
-            // 소셜 미디어 자동화
+            // Social Media Automation
             "youtube-bot", "youtube-automation",
             "quora-automation"
         ),
@@ -531,33 +531,33 @@ object TopicCategories {
         "Game Development" to listOf(
             "game", "games", "gaming", "gamedev", "game-development", "game-dev",
             "game-design", "game-engine", "engine",
-            // 엔진
+            // Engines
             "unity", "unity3d", "godot", "godot4", "bevy", "raylib",
-            // 장르
+            // Genres
             "3d", "2d", "2d-game", "2d-games", "3d-game", "multiplayer", "multiplayer-game",
             "multiplayer-game-server", "mmorpg", "platformer", "rpg", "rpg-game",
             "adventure-game", "browser-game",
-            // 특정 게임
+            // Specific Games
             "minecraft", "minecraft-server", "minecraft-mod", "minecraft-plugin",
             "minecraft-launcher", "minecraft-bedrock-edition",
             "roblox", "pokemon", "genshin-impact",
             "fortnite", "valorant", "cs2", "csgo", "csgo2", "counter-strike", "counter-strike-2",
             "call-of-duty", "lol", "among-us", "axie-infinity", "axie-infinity-game",
-            // 게임 봇/치트
+            // Game Bots/Cheats
             "game-bot", "game-cheat", "fivem", "fivem-cheat", "fivem-hack",
             "fivem-aimbot", "fivem-esp", "fivem-script", "fivem-spoofer",
             "valorant-cheat", "valorant-hack", "valorant-aimbot", "valorant-esp",
             "qbcore",
-            // 기타
+            // Others
             "mini-game", "clicker-game", "simulation", "simulator",
             "physics", "physics-simulation", "physics-engine",
             "graphics", "webgl", "webgl2", "opengl", "vulkan", "shaders",
             "threejs", "canvas",
-            // 게임 서버
+            // Game Servers
             "game-server", "spigot-plugin", "bungeecord", "bukkit",
-            // 게임 라이브러리
+            // Game Libraries
             "pygame", "game-library",
-            // 게임 도구
+            // Game Tools
             "steam", "steam-games"
         ),
 
@@ -572,7 +572,7 @@ object TopicCategories {
             "unit-test", "unit-testing", "mockito", "mock",
             // API Testing
             "api-testing", "rest-client", "postman", "swagger-ui",
-            // 코드 품질
+            // Code Quality
             "tdd", "bdd", "testing-tools",
             "code-quality", "code-analysis", "static-analysis", "static-code-analysis",
             "linter", "eslint", "eslint-config", "prettier", "ruff",
@@ -582,7 +582,7 @@ object TopicCategories {
             "batch", "evaluation", "qa", "qa-automation",
             // Coverage
             "coverage", "code-coverage",
-            // 기타
+            // Others
             "sonarcloud"
         ),
 
@@ -592,28 +592,28 @@ object TopicCategories {
             "cli", "cli-tool", "cli-app", "command-line", "command-line-tool",
             "terminal", "terminal-ui", "terminal-app", "shell", "bash", "bash-script",
             "zsh", "fish", "powershell", "powershell-module",
-            // 에디터
+            // Editors
             "vscode", "vscode-extension", "visual-studio-code", "visual-studio",
             "neovim", "nvim", "neovim-plugin", "neovim-config", "neovim-configuration",
             "neovim-dotfiles", "vim",
             "cursor", "cursor-ai", "cursor-ide", "cursor-ai-editor",
             "ide", "web-ide", "intellij-plugin", "intellij",
-            // AI 코딩 도구
+            // AI Coding Tools
             "windsurf-ai", "cursorai", "bolt", "cline",
             "github-copilot", "coding-assistant", "coding-agents", "ai-coding",
             "agentic-coding", "code-execution",
-            // 도구
+            // Tools
             "tools", "developer-tools", "development-tools", "devtools", "dev-tools",
             "utilities", "utility", "util", "utils", "helper",
             "productivity", "productivity-tools", "productivity-tool", "productivity-app",
             "toolkit", "manager", "downloader", "calculator", "calculator-application",
             "yt-dlp", "console",
-            // 버전관리
+            // Version Control
             "git", "github", "github-api", "github-pages", "github-profile",
             "github-readme", "github-readme-profile", "github-profile-readme",
             "github-stats", "github-page",
             "gitlab", "version-control", "git-scraping",
-            // 패키지 관리자
+            // Package Managers
             "package-manager", "package-management", "npm", "pnpm", "yarn",
             "maven", "gradle", "gradle-plugin", "pip", "pypi", "cargo",
             "homebrew", "apt", "scoop", "scoop-bucket", "scoop-apps",
@@ -623,11 +623,11 @@ object TopicCategories {
             "configuration", "config", "configuration-management", "metadata",
             "nixos-config", "nixos-configuration", "nix-darwin", "nix-flake", "nix-flakes",
             "flake",
-            // 문서화
+            // Documentation
             "documentation", "docs", "readme", "readme-md",
             "markdown", "markdown-lang", "markdown-language", "markdown-editor",
             "mdx", "latex", "mkdocs", "docusaurus", "docusaurus2",
-            // 기타
+            // Others
             "addon", "plugin-manager", "extension", "plugin", "plugins",
             "screenshot", "screen-capture", "clipboard", "copy-paste",
             "anki", "anki-addon", "obsidian", "obsidian-plugin", "obsidian-md",
@@ -743,26 +743,26 @@ object TopicCategories {
     )
 
     /**
-     * 제외할 일반적인 토픽 (너무 광범위하거나 의미 없는 것들)
+     * Topics to exclude (too broad or meaningless)
      */
     val EXCLUDED_TOPICS = setOf(
-        // 일반 단어
+        // Generic Words
         "open", "free", "simple", "basic", "general", "common",
         "learn", "learning", "tutorial", "guide", "example", "examples",
         "demo", "test", "experimental", "poc", "prototype", "proof-of-concept",
         "project", "template", "boilerplate", "starter", "starter-template", "starter-kit",
         "awesome", "collection", "list", "resources", "awesome-list", "awesome-lists",
-        // 연도
+        // Years
         "2025", "2024", "2023", "2026", "hacktoberfest", "hacktoberfest2025",
         "hacktoberfest2024", "hacktoberfest2023", "hacktoberfest2022",
         "hacktoberfest2021", "hacktoberfest2020", "hacktoberfest-accepted",
-        // 커뮤니티
+        // Community
         "opensource", "open-source", "community", "repository", "repositories",
         "good-first-issue", "course", "resume", "assistant",
         "peer-to-peer", "p2p", "client-side", "high-performance",
         "compliance", "healthcare", "games", "unix", "seed",
         "build", "vibe-coding", "vibecode",
-        // 학습/교육
+        // Learning/Education
         "learning-resources", "educational-resources", "educational-project",
         "educational-tools", "students", "study", "curriculum",
         "internship", "internships", "course-project", "university-project",
@@ -770,7 +770,7 @@ object TopicCategories {
         "udemy", "coursera", "edx", "mooc",
         "learning", "learn", "tutorial", "tutorials", "guide", "guides",
         "interactive-learning", "e-learning",
-        // 기타 일반
+        // Other General
         "opensource", "foss", "open-access", "open-data", "open-science",
         "contributions", "contributions-welcome", "contribution",
         "help-wanted", "good-first-issue", "beginner-friendly", "for-beginners",
@@ -781,7 +781,7 @@ object TopicCategories {
         "skills", "samples", "code-samples", "code-examples",
         "reference", "specifications", "specification", "standard", "standards",
         "addon", "component", "plugin", "extension", "widget", "widgets",
-        // 너무 광범위한 토픽
+        // Too Broad Topics
         "software", "software-tools", "software-library", "software-architecture",
         "software-testing", "software-library",
         "application", "applications", "development", "app",
@@ -797,33 +797,33 @@ object TopicCategories {
         "cloud", "serverless",
         "automation", "automatic",
         "integration", "enterprise-integration",
-        // 문서/README
+        // Documentation/README
         "readme", "readme-md", "documentation", "docs",
         "awesome-readme", "technical-documentation",
         "user-guide", "manual", "handbook",
-        // 프로젝트 타입
+        // Project Types
         "mvp", "poc", "proof-of-concept", "prototype", "prototyping",
         "demo", "demo-project", "demo-app",
         "example", "examples", "sample", "samples",
         "template", "templates", "boilerplate", "boilerplate-template",
         "starter", "starter-template", "starter-kit", "quickstart",
         "scaffold", "scaffolding", "skeleton",
-        // 상태/품질
+        // Status/Quality
         "beta", "alpha", "experimental", "wip", "work-in-progress",
         "deprecated", "legacy", "archived", "archive",
         "stable", "production", "production-ready",
         "research", "research-project", "research-tool", "research-tools",
-        // 라이선스/법적
+        // License/Legal
         "mit-license", "apache", "gpl", "bsd", "license",
         "legal", "terms-of-service", "terms-and-conditions", "privacy-policy",
-        // 기타 커뮤니티
+        // Other Community
         "collaboration", "collaborate", "collaborative", "collaboration-tools",
         "work-from-home", "remote", "remote-development", "remote-work",
         "team", "teams", "teamwork", "pair-programming",
         "code-review", "pull-request", "pull-requests", "pr",
         "issue", "issues", "bug", "bugs", "bugfix",
         "commit", "commits", "contribution-graph",
-        // 범용 형용사
+        // Generic Adjectives
         "awesome", "amazing", "cool", "best", "top", "popular", "trending",
         "new", "latest", "modern", "advanced", "professional",
         "easy", "simple", "quick", "fast", "lightweight",
@@ -833,12 +833,12 @@ object TopicCategories {
         "scalable", "scalable-architecture", "extensible",
         "multi", "multi-platform", "cross-platform", "multiplatform",
         "universal", "generic", "common",
-        // 동작/상태
+        // Actions/Status
         "install", "installer", "setup", "update", "upgrade",
         "deploy", "deployment", "build", "building",
         "test", "testing", "debug", "debugging",
         "monitor", "monitoring", "track", "tracking",
-        // 기타
+        // Others
         "fun", "game", "games", "gaming",
         "misc", "miscellaneous", "other", "others", "various",
         "collection", "collections", "list", "lists", "starred",
@@ -849,22 +849,22 @@ object TopicCategories {
         "music", "song", "sound", "audio",
         "image", "images", "photo", "photos", "picture",
         "text", "document", "documents", "file", "files",
-        // 지역/언어
+        // Region/Language
         "english", "english-language", "chinese", "japanese", "korean",
         "french", "german", "spanish", "portuguese", "russian",
         "vietnamese", "vietnamese-language", "arabic", "hindi",
         "language", "languages", "natural-language",
-        // 산업/도메인 (너무 일반적)
+        // Industry/Domain (too generic)
         "business", "enterprise", "commerce", "retail",
         "healthcare", "medical", "health",
         "education", "educational",
         "finance", "financial",
         "science", "scientific", "science-research",
         "engineering", "it", "information-technology",
-        // 특정 회사/제품 (너무 일반적)
+        // Specific Companies/Products (too generic)
         "github", "google", "microsoft", "amazon", "aws", "azure",
         "facebook", "twitter", "instagram", "youtube", "tiktok",
-        // 기타 제외
+        // Other Exclusions
         "hactoberfest", "advent-of-code", "advent-of-code-2025",
         "ctf", "capture-the-flag",
         "conference", "conferences", "meetup", "meetups",

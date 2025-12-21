@@ -12,22 +12,22 @@ import kotlin.collections.distinctBy
 class TopicCategorizationService {
     
     /**
-     * 토픽 리스트를 카테고리별로 분류
+     * Categorize topic list by category
      * 
-     * @param topics 분류할 토픽 리스트
-     * @return 카테고리별로 그룹화된 토픽 맵
+     * @param topics Topic list to categorize
+     * @return Topic map grouped by category
      */
     fun categorizeTopics(topics: List<String>): Map<String, List<String>> {
         val categorized = mutableMapOf<String, MutableList<String>>()
         val uncategorized = mutableListOf<String>()
         
         topics.distinct().forEach { topic ->
-            // 제외 목록 체크
+            // Check exclusion list
             if (shouldExclude(topic)) {
                 return@forEach
             }
             
-            // 카테고리 찾기
+            // Find category
             val category = findCategory(topic)
             
             if (category != null) {
@@ -37,21 +37,21 @@ class TopicCategorizationService {
             }
         }
         
-        // 미분류 항목 추가
+        // Add uncategorized items
         if (uncategorized.isNotEmpty()) {
             categorized["Others"] = uncategorized
         }
         
-        // 각 카테고리 내 토픽을 알파벳순으로 정렬
+        // Sort topics alphabetically within each category
         return categorized.mapValues { it.value.sorted() }
-            .toSortedMap() // 카테고리도 알파벳순 정렬
+            .toSortedMap() // Sort categories alphabetically too
     }
     
     /**
-     * 토픽 통계와 함께 카테고리 분석
+     * Analyze categories with topic statistics
      *
-     * @param topicStats 토픽 통계 리스트
-     * @return 카테고리별 통계 정보
+     * @param topicStats Topic statistics list
+     * @return Statistics information by category
      */
     fun analyzeCategoryStats(topicStats: List<TopicStatistic>): List<CategoryStats> {
         val categoryMap = mutableMapOf<String, MutableList<TopicStatistic>>()
@@ -70,7 +70,7 @@ class TopicCategorizationService {
             }
         }
         
-        // 카테고리별 통계 생성
+        // Generate statistics by category
         val results = categoryMap.map { (category, stats) ->
             CategoryStats(
                 category = category,
@@ -86,7 +86,7 @@ class TopicCategorizationService {
             )
         }.sortedByDescending { it.totalRepoCount }
         
-        // Others 카테고리 추가
+        // Add Others category
         if (otherStats.isNotEmpty()) {
             val othersResult = CategoryStats(
                 category = "Others",
@@ -107,22 +107,22 @@ class TopicCategorizationService {
     }
     
     /**
-     * 특정 토픽의 카테고리 찾기
+     * Find category for specific topic
      * 
-     * @param topic 카테고리를 찾을 토픽
-     * @return 매칭된 카테고리 이름, 없으면 null
+     * @param topic Topic to find category for
+     * @return Matched category name, or null if not found
      */
     fun findCategory(topic: String): String? {
         val topicLower = topic.lowercase().trim()
         
-        // 정확한 매칭 우선
+        // Exact match first
         TopicCategories.CATEGORY_KEYWORDS.forEach { (category, keywords) ->
             if (keywords.any { keyword -> topicLower == keyword }) {
                 return category
             }
         }
         
-        // 부분 매칭 (접두사, 접미사, 포함)
+        // Partial match (prefix, suffix, contains)
         TopicCategories.CATEGORY_KEYWORDS.forEach { (category, keywords) ->
             if (keywords.any { keyword -> isPartialMatch(topicLower, keyword) }) {
                 return category
@@ -133,47 +133,47 @@ class TopicCategorizationService {
     }
     
     /**
-     * 제외 대상 토픽 확인
+     * Check if topic should be excluded
      */
     private fun shouldExclude(topic: String): Boolean {
         val topicLower = topic.lowercase().trim()
         
-        // 빈 문자열
+        // Empty string
         if (topicLower.isBlank()) return true
         
-        // 제외 목록 정확 매칭
+        // Exact match in exclusion list
         if (topicLower in TopicCategories.EXCLUDED_TOPICS) return true
         
-        // 너무 짧은 토픽 (1-2글자)
+        // Too short topics (1-2 characters)
         if (topicLower.length <= 2) return true
         
-        // 숫자만 있는 토픽
+        // Topics with only digits
         if (topicLower.all { it.isDigit() }) return true
         
         return false
     }
     
     /**
-     * 부분 매칭 확인
-     * - 접두사: "react-" 패턴
-     * - 접미사: "-bot" 패턴
-     * - 포함: "kubernetes" in "kubernetes-operator"
+     * Check partial match
+     * - Prefix: "react-" pattern
+     * - Suffix: "-bot" pattern
+     * - Contains: "kubernetes" in "kubernetes-operator"
      */
     private fun isPartialMatch(topic: String, keyword: String): Boolean {
-        // 정확한 매칭
+        // Exact match
         if (topic == keyword) return true
         
-        // 접두사 매칭: keyword로 시작하고 -나 _가 따라옴
+        // Prefix match: starts with keyword followed by - or _
         if (topic.startsWith("$keyword-") || topic.startsWith("${keyword}_")) {
             return true
         }
         
-        // 접미사 매칭: -나 _로 시작하고 keyword로 끝남
+        // Suffix match: starts with - or _ and ends with keyword
         if (topic.endsWith("-$keyword") || topic.endsWith("_$keyword")) {
             return true
         }
         
-        // 중간 매칭: -keyword- 또는 _keyword_ 패턴
+        // Middle match: -keyword- or _keyword_ pattern
         if (topic.contains("-$keyword-") || topic.contains("_${keyword}_")) {
             return true
         }
@@ -182,7 +182,7 @@ class TopicCategorizationService {
     }
     
     /**
-     * 카테고리 목록 조회 (메타데이터)
+     * Get category list (metadata)
      */
     fun getAllCategories(): List<CategoryMetadata> {
         return TopicCategories.CATEGORY_KEYWORDS.keys.map { category ->
@@ -195,7 +195,7 @@ class TopicCategorizationService {
     }
     
     /**
-     * 카테고리 설명 반환
+     * Return category description
      */
     private fun getCategoryDescription(category: String): String {
         return when (category) {

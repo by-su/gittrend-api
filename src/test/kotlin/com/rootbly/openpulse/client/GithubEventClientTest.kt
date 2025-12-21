@@ -1,7 +1,7 @@
 package com.rootbly.openpulse.client
 
-import com.rootbly.openpulse.exception.GithubClientException
-import com.rootbly.openpulse.exception.GithubServerException
+import com.rootbly.openpulse.common.exception.GithubClientException
+import com.rootbly.openpulse.common.exception.GithubServerException
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll

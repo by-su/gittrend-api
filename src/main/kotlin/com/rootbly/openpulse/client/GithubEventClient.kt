@@ -1,7 +1,7 @@
 package com.rootbly.openpulse.client
 
-import com.rootbly.openpulse.exception.GithubClientException
-import com.rootbly.openpulse.exception.GithubServerException
+import com.rootbly.openpulse.common.exception.GithubClientException
+import com.rootbly.openpulse.common.exception.GithubServerException
 import com.rootbly.openpulse.payload.GithubEventDto
 import com.rootbly.openpulse.payload.GithubRepoResponse
 import org.slf4j.LoggerFactory
@@ -37,7 +37,7 @@ class GithubEventClient(
             githubWebClient.get()
                 .uri("/events")
                 .retrieve()
-                .applyErrorHandling("events")  // 공통 함수 사용
+                .applyErrorHandling("events")  // Use common function
                 .awaitBody<List<GithubEventDto>>()
         } catch (e: DecodingException) {
             handleDecodingError(e, "events")

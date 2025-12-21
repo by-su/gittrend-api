@@ -56,8 +56,12 @@ class GithubEventProcessorTest {
         channel.sendMetadataFetchEvent(GithubRepoMetadataFetchEvent("owner/repo1", 1L))
         channel.sendMetadataFetchEvent(GithubRepoMetadataFetchEvent("owner/repo2", 2L))
 
-        // Wait for processing
-        delay(500)
+        // Wait until all events are processed (with timeout)
+        var attempts = 0
+        while (processedRepos.size < 2 && attempts < 100) {
+            delay(50)
+            attempts++
+        }
 
         // Then
         processor.cleanup()

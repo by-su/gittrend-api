@@ -1,7 +1,7 @@
 package com.rootbly.openpulse.payload
 
 /**
- * 카테고리 통계 정보
+ * Category statistics information
  */
 data class CategoryStats(
     val category: String,
@@ -11,7 +11,7 @@ data class CategoryStats(
 )
 
 /**
- * 토픽과 카운트
+ * Topic with count
  */
 data class TopicWithCount(
     val topic: String,
@@ -19,7 +19,7 @@ data class TopicWithCount(
 )
 
 /**
- * 카테고리 메타데이터
+ * Category metadata
  */
 data class CategoryMetadata(
     val name: String,

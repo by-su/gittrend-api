@@ -1,4 +1,4 @@
-package com.rootbly.openpulse.exception
+package com.rootbly.openpulse.common.exception
 
 /**
  * Exception thrown on GitHub API 4xx client errors
