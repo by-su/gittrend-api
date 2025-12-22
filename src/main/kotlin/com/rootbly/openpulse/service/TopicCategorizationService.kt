@@ -5,11 +5,15 @@ import com.rootbly.openpulse.entity.TopicStatistic
 import com.rootbly.openpulse.payload.CategoryMetadata
 import com.rootbly.openpulse.payload.CategoryStats
 import com.rootbly.openpulse.payload.TopicWithCount
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import kotlin.collections.distinctBy
 
 @Service
-class TopicCategorizationService {
+class TopicCategorizationService(
+    private val githubRepoTopicStatisticHourlyService: GithubRepoTopicStatisticHourlyService,
+    private val githubRepoTopicStatisticDailyService: GithubRepoTopicStatisticDailyService
+) {
     
     /**
      * Categorize topic list by category
@@ -105,10 +109,32 @@ class TopicCategorizationService {
         
         return results
     }
-    
+
+    /**
+     * Analyze hourly category statistics (cached)
+     *
+     * @return Statistics information by category for hourly data
+     */
+    @Cacheable(value = ["hourlyStatistics"], key = "'topicCategorization'")
+    fun analyzeHourlyCategoryStats(): List<CategoryStats> {
+        val hourlyStats = githubRepoTopicStatisticHourlyService.retrieveGithubRepoTopicStatisticHourly()
+        return analyzeCategoryStats(hourlyStats)
+    }
+
+    /**
+     * Analyze daily category statistics (cached)
+     *
+     * @return Statistics information by category for daily data
+     */
+    @Cacheable(value = ["dailyStatistics"], key = "'topicCategorization'")
+    fun analyzeDailyCategoryStats(): List<CategoryStats> {
+        val dailyStats = githubRepoTopicStatisticDailyService.retrieveGithubRepoTopicStatisticDaily()
+        return analyzeCategoryStats(dailyStats)
+    }
+
     /**
      * Find category for specific topic
-     * 
+     *
      * @param topic Topic to find category for
      * @return Matched category name, or null if not found
      */
