@@ -23,7 +23,7 @@ class CacheConfig {
                 .expireAfter(object : Expiry<Any, Any> {
                     override fun expireAfterCreate(key: Any, value: Any, currentTime: Long): Long {
                         val now = LocalDateTime.now()
-                        val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay()
+                        val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay().plusSeconds(30)
                         return Duration.between(now, nextMidnight).toNanos()
                     }
 
@@ -45,7 +45,7 @@ class CacheConfig {
                     override fun expireAfterCreate(key: Any, value: Any, currentTime: Long): Long {
                         val now = LocalDateTime.now()
                         val nextHour = now.toLocalDate()
-                            .atTime(now.hour + 1, 0, 0)
+                            .atTime(now.hour + 1, 0, 30)
                         return Duration.between(now, nextHour).toNanos()
                     }
 

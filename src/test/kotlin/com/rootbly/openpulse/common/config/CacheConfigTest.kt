@@ -41,7 +41,7 @@ class CacheConfigTest @Autowired constructor(
 
         // Calculate expected time until next midnight
         val now = LocalDateTime.now()
-        val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay()
+        val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay().plusSeconds(30)
         val expectedNanos: Long = Duration.between(now, nextMidnight).toNanos()
 
         // Allow 1 second tolerance for test execution time
@@ -66,7 +66,7 @@ class CacheConfigTest @Autowired constructor(
 
         // Calculate expected time until next hour
         val now = LocalDateTime.now()
-        val nextHour = now.toLocalDate().atTime(now.hour + 1, 0, 0)
+        val nextHour = now.toLocalDate().atTime(now.hour + 1, 0, 30)
         val expectedNanos: Long = Duration.between(now, nextHour).toNanos()
 
         // Allow 1 second tolerance for test execution time
