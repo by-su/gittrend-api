@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import java.time.Instant
@@ -16,6 +17,9 @@ import java.time.Instant
 @Table(
     uniqueConstraints = [
         UniqueConstraint(columnNames = ["event_type", "statistic_day"])
+    ],
+    indexes = [
+        Index(name = "idx_statistic_day", columnList = "statistic_day")
     ]
 )
 class GithubEventStatisticDaily(

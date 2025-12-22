@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import java.time.Instant
@@ -17,6 +18,9 @@ import java.time.Instant
     name = "github_repo_topic_statistic_hourly",
     uniqueConstraints = [
         UniqueConstraint(columnNames = ["topic", "statistic_hour"])
+    ],
+    indexes = [
+        Index(name = "idx_statistic_hour", columnList = "statistic_hour")
     ]
 )
 class GithubRepoTopicStatisticHourly(
