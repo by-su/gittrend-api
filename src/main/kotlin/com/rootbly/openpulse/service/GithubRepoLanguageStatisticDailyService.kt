@@ -29,7 +29,7 @@ class GithubRepoLanguageStatisticDailyService(
     /**
      * Retrieves yesterday's daily language statistics
      */
-    @Cacheable("dailyStatistics")
+    @Cacheable(value = ["dailyStatistics"], key = "'repoLanguage'")
     fun retrieveGithubRepoLanguageStatisticDaily(): List<GithubRepoLanguageStatisticDaily> {
         val timeRange = TimeRangeCalculator.getPreviousDayRange()
         return githubRepoLanguageStatisticDailyRepository.findAllByStatisticDayBetween(timeRange.start, timeRange.end)

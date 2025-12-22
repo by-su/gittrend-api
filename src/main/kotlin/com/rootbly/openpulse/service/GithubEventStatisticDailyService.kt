@@ -58,7 +58,7 @@ class GithubEventStatisticDailyService(
      *
      * @return List of event type counts for the previous day
      */
-    @Cacheable("dailyStatistics")
+    @Cacheable(value = ["dailyStatistics"], key = "'event'")
     fun retrieveDaily(): List<GithubEventStatisticDaily> {
         val timeRange = TimeRangeCalculator.getPreviousDayRange()
         return githubEventStatisticDailyRepository.findAllByStatisticDayGreaterThanEqualAndStatisticDayLessThan(timeRange.start, timeRange.end)

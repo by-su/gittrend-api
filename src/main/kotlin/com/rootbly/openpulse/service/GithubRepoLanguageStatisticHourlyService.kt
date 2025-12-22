@@ -29,7 +29,7 @@ class GithubRepoLanguageStatisticHourlyService(
     /**
      * Retrieves previous hour's language statistics
      */
-    @Cacheable("hourlyStatistics")
+    @Cacheable(value = ["hourlyStatistics"], key = "'repoLanguage'")
     fun retrieveGithubRepoLanguageStatisticHourly(): List<GithubRepoLanguageStatisticHourly> {
         val timeRange = TimeRangeCalculator.getPreviousHourRange()
         return githubRepoLanguageStatisticHourlyRepository.findAllByStatisticHourBetween(timeRange.start, timeRange.end)

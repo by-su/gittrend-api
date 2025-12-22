@@ -30,7 +30,7 @@ class GithubRepoTopicStatisticHourlyService(
     /**
      * Retrieves previous hour's topic statistics
      */
-    @Cacheable("hourlyStatistics")
+    @Cacheable(value = ["hourlyStatistics"], key = "'repoTopic'")
     fun retrieveGithubRepoTopicStatisticHourly(): List<GithubRepoTopicStatisticHourly> {
         val timeRange = TimeRangeCalculator.getPreviousHourRange()
         return githubRepoTopicStatisticHourlyRepository.findAllByStatisticHourBetween(timeRange.start, timeRange.end)

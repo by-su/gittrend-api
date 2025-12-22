@@ -60,7 +60,7 @@ class GithubEventStatisticHourlyService(
      *
      * @return List of event type counts for the previous hour
      */
-    @Cacheable("hourlyStatistics")
+    @Cacheable(value = ["hourlyStatistics"], key = "'event'")
     fun retrieveGithubEventStatisticHourly(): List<GithubEventStatisticHourly> {
         val timeRange = TimeRangeCalculator.getPreviousHourRange()
         return githubEventStatisticsHourlyRepository.findAllByCreatedAtBetween(timeRange.start, timeRange.end)

@@ -30,7 +30,7 @@ class GithubRepoTopicStatisticDailyService(
     /**
      * Retrieves yesterday's daily topic statistics
      */
-    @Cacheable("dailyStatistics")
+    @Cacheable(value = ["dailyStatistics"], key = "'repoTopic'")
     fun retrieveGithubRepoTopicStatisticDaily(): List<GithubRepoTopicStatisticDaily> {
         val timeRange = TimeRangeCalculator.getPreviousDayRange()
         return githubRepoTopicStatisticDailyRepository.findAllByStatisticDayBetween(timeRange.start, timeRange.end)
