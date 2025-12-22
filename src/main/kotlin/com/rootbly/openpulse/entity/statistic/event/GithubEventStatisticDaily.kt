@@ -1,4 +1,4 @@
-package com.rootbly.openpulse.entity
+package com.rootbly.openpulse.entity.statistic.event
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -11,27 +11,26 @@ import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 
 /**
- * Daily GitHub repository language statistics entity
+ * Daily GitHub event statistics snapshot entity
  */
 @Entity
 @Table(
-    name = "github_repo_language_statistic_daily",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["language", "statistic_day"])
+        UniqueConstraint(columnNames = ["event_type", "statistic_day"])
     ],
     indexes = [
         Index(name = "idx_statistic_day", columnList = "statistic_day")
     ]
 )
-class GithubRepoLanguageStatisticDaily(
+class GithubEventStatisticDaily(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @Column(name = "language", nullable = false)
-    val language: String,
+    @Column(name = "event_type", nullable = false)
+    val eventType: String,
 
-    @Column(name = "repo_count", nullable = false)
-    val repoCount: Int,
+    @Column(name = "event_count", nullable = false)
+    val eventCount: Int,
 
     @Column(name = "statistic_day", nullable = false)
     val statisticDay: Instant,
@@ -47,7 +46,7 @@ class GithubRepoLanguageStatisticDaily(
         if (this === other) return true
         if (other != null && javaClass != other.javaClass) return false
 
-        other as GithubRepoLanguageStatisticDaily
+        other as GithubEventStatisticDaily
 
         return id != null && id == other.id
     }

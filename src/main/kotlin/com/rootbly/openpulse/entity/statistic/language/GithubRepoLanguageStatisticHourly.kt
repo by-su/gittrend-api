@@ -1,4 +1,4 @@
-package com.rootbly.openpulse.entity
+package com.rootbly.openpulse.entity.statistic.language
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -11,27 +11,27 @@ import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 
 /**
- * Hourly GitHub repository topic statistics entity
+ * Hourly GitHub repository language statistics entity
  */
 @Entity
 @Table(
-    name = "github_repo_topic_statistic_hourly",
+    name = "github_repo_language_statistic_hourly",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["topic", "statistic_hour"])
+        UniqueConstraint(columnNames = ["language", "statistic_hour"])
     ],
     indexes = [
         Index(name = "idx_statistic_hour", columnList = "statistic_hour")
     ]
 )
-class GithubRepoTopicStatisticHourly(
+class GithubRepoLanguageStatisticHourly(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @Column(name = "topic", nullable = false)
-    override val topic: String,
+    @Column(name = "language", nullable = false)
+    val language: String,
 
     @Column(name = "repo_count", nullable = false)
-    override val repoCount: Int,
+    val repoCount: Int,
 
     @Column(name = "statistic_hour", nullable = false)
     val statisticHour: Instant,
@@ -41,13 +41,13 @@ class GithubRepoTopicStatisticHourly(
 
     @Column(name = "updated_at", nullable = false)
     val updatedAt: Instant,
-) : TopicStatistic {
+) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other != null && javaClass != other.javaClass) return false
 
-        other as GithubRepoTopicStatisticHourly
+        other as GithubRepoLanguageStatisticHourly
 
         return id != null && id == other.id
     }

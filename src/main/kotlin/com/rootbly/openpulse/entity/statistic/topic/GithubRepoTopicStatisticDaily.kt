@@ -1,5 +1,6 @@
-package com.rootbly.openpulse.entity
+package com.rootbly.openpulse.entity.statistic.topic
 
+import com.rootbly.openpulse.entity.TopicStatistic
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -11,26 +12,27 @@ import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 
 /**
- * Daily GitHub event statistics snapshot entity
+ * Daily GitHub repository topic statistics entity
  */
 @Entity
 @Table(
+    name = "github_repo_topic_statistic_daily",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["event_type", "statistic_day"])
+        UniqueConstraint(columnNames = ["topic", "statistic_day"])
     ],
     indexes = [
         Index(name = "idx_statistic_day", columnList = "statistic_day")
     ]
 )
-class GithubEventStatisticDaily(
+class GithubRepoTopicStatisticDaily(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @Column(name = "event_type", nullable = false)
-    val eventType: String,
+    @Column(name = "topic", nullable = false)
+    override val topic: String,
 
-    @Column(name = "event_count", nullable = false)
-    val eventCount: Int,
+    @Column(name = "repo_count", nullable = false)
+    override val repoCount: Int,
 
     @Column(name = "statistic_day", nullable = false)
     val statisticDay: Instant,
@@ -40,13 +42,13 @@ class GithubEventStatisticDaily(
 
     @Column(name = "updated_at", nullable = false)
     val updatedAt: Instant,
-) {
+) : TopicStatistic {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other != null && javaClass != other.javaClass) return false
 
-        other as GithubEventStatisticDaily
+        other as GithubRepoTopicStatisticDaily
 
         return id != null && id == other.id
     }

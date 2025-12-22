@@ -1,7 +1,7 @@
 package com.rootbly.openpulse.service
 
 import com.rootbly.openpulse.common.util.TimeRangeCalculator
-import com.rootbly.openpulse.entity.GithubEventStatisticDaily
+import com.rootbly.openpulse.entity.statistic.event.GithubEventStatisticDaily
 import com.rootbly.openpulse.repository.GithubEventStatisticDailyRepository
 import com.rootbly.openpulse.repository.GithubEventStatisticsHourlyRepository
 import org.springframework.stereotype.Service

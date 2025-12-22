@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.controller
 
-import com.rootbly.openpulse.entity.GithubRepoTopicStatisticDaily
+import com.rootbly.openpulse.entity.statistic.topic.GithubRepoTopicStatisticDaily
 import com.rootbly.openpulse.service.GithubRepoTopicStatisticDailyService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

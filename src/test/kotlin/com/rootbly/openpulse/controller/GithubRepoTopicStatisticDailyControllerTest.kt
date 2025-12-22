@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.controller
 
-import com.rootbly.openpulse.entity.GithubRepoTopicStatisticDaily
+import com.rootbly.openpulse.entity.statistic.topic.GithubRepoTopicStatisticDaily
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

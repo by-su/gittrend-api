@@ -1,5 +1,6 @@
-package com.rootbly.openpulse.entity
+package com.rootbly.openpulse.entity.statistic.topic
 
+import com.rootbly.openpulse.entity.TopicStatistic
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -11,19 +12,19 @@ import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 
 /**
- * Daily GitHub repository topic statistics entity
+ * Hourly GitHub repository topic statistics entity
  */
 @Entity
 @Table(
-    name = "github_repo_topic_statistic_daily",
+    name = "github_repo_topic_statistic_hourly",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["topic", "statistic_day"])
+        UniqueConstraint(columnNames = ["topic", "statistic_hour"])
     ],
     indexes = [
-        Index(name = "idx_statistic_day", columnList = "statistic_day")
+        Index(name = "idx_statistic_hour", columnList = "statistic_hour")
     ]
 )
-class GithubRepoTopicStatisticDaily(
+class GithubRepoTopicStatisticHourly(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
@@ -33,8 +34,8 @@ class GithubRepoTopicStatisticDaily(
     @Column(name = "repo_count", nullable = false)
     override val repoCount: Int,
 
-    @Column(name = "statistic_day", nullable = false)
-    val statisticDay: Instant,
+    @Column(name = "statistic_hour", nullable = false)
+    val statisticHour: Instant,
 
     @Column(name = "created_at", nullable = false)
     val createdAt: Instant,
@@ -47,7 +48,7 @@ class GithubRepoTopicStatisticDaily(
         if (this === other) return true
         if (other != null && javaClass != other.javaClass) return false
 
-        other as GithubRepoTopicStatisticDaily
+        other as GithubRepoTopicStatisticHourly
 
         return id != null && id == other.id
     }

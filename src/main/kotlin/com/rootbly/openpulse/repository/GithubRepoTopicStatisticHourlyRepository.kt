@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.repository
 
-import com.rootbly.openpulse.entity.GithubRepoTopicStatisticHourly
+import com.rootbly.openpulse.entity.statistic.topic.GithubRepoTopicStatisticHourly
 import org.springframework.data.jpa.repository.JpaRepository
 import java.time.Instant
 

@@ -1,7 +1,7 @@
 package com.rootbly.openpulse.service
 
 import com.rootbly.openpulse.common.util.TimeRangeCalculator
-import com.rootbly.openpulse.entity.GithubEventStatisticHourly
+import com.rootbly.openpulse.entity.statistic.event.GithubEventStatisticHourly
 import com.rootbly.openpulse.repository.GithubEventRepository
 import com.rootbly.openpulse.repository.GithubEventStatisticsHourlyRepository
 import org.slf4j.LoggerFactory

@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.service
 
-import com.rootbly.openpulse.entity.GithubRepoTopicStatisticDaily
+import com.rootbly.openpulse.entity.statistic.topic.GithubRepoTopicStatisticDaily
 import com.rootbly.openpulse.fixture.GithubRepoMetadataFixture
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import com.rootbly.openpulse.repository.GithubRepoTopicStatisticDailyRepository

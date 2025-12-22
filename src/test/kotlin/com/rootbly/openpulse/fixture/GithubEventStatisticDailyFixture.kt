@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.fixture
 
-import com.rootbly.openpulse.entity.GithubEventStatisticDaily
+import com.rootbly.openpulse.entity.statistic.event.GithubEventStatisticDaily
 import java.time.Instant
 
 object GithubEventStatisticDailyFixture {

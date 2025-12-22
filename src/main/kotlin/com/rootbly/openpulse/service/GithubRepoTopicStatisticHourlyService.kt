@@ -3,7 +3,7 @@ package com.rootbly.openpulse.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rootbly.openpulse.common.util.JsonParsingUtil
 import com.rootbly.openpulse.common.util.TimeRangeCalculator
-import com.rootbly.openpulse.entity.GithubRepoTopicStatisticHourly
+import com.rootbly.openpulse.entity.statistic.topic.GithubRepoTopicStatisticHourly
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import com.rootbly.openpulse.repository.GithubRepoTopicStatisticHourlyRepository
 import org.slf4j.LoggerFactory

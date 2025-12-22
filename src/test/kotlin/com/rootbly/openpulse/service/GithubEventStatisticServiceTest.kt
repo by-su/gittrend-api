@@ -1,6 +1,6 @@
 package com.rootbly.openpulse.service
 
-import com.rootbly.openpulse.entity.GithubEventStatisticHourly
+import com.rootbly.openpulse.entity.statistic.event.GithubEventStatisticHourly
 import com.rootbly.openpulse.fixture.GithubEventFixture
 import com.rootbly.openpulse.fixture.GithubEventStatisticHourlyFixture
 import com.rootbly.openpulse.repository.GithubEventRepository
