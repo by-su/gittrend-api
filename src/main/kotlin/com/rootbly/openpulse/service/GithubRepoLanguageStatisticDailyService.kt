@@ -6,6 +6,7 @@ import com.rootbly.openpulse.entity.statistic.language.GithubRepoLanguageStatist
 import com.rootbly.openpulse.repository.GithubRepoLanguageStatisticDailyRepository
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import org.slf4j.LoggerFactory
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -28,6 +29,7 @@ class GithubRepoLanguageStatisticDailyService(
     /**
      * Retrieves yesterday's daily language statistics
      */
+    @Cacheable("dailyStatistics")
     fun retrieveGithubRepoLanguageStatisticDaily(): List<GithubRepoLanguageStatisticDaily> {
         val timeRange = TimeRangeCalculator.getPreviousDayRange()
         return githubRepoLanguageStatisticDailyRepository.findAllByStatisticDayBetween(timeRange.start, timeRange.end)

@@ -6,6 +6,7 @@ import com.rootbly.openpulse.entity.statistic.language.GithubRepoLanguageStatist
 import com.rootbly.openpulse.repository.GithubRepoLanguageStatisticHourlyRepository
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import org.slf4j.LoggerFactory
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -28,6 +29,7 @@ class GithubRepoLanguageStatisticHourlyService(
     /**
      * Retrieves previous hour's language statistics
      */
+    @Cacheable("hourlyStatistics")
     fun retrieveGithubRepoLanguageStatisticHourly(): List<GithubRepoLanguageStatisticHourly> {
         val timeRange = TimeRangeCalculator.getPreviousHourRange()
         return githubRepoLanguageStatisticHourlyRepository.findAllByStatisticHourBetween(timeRange.start, timeRange.end)

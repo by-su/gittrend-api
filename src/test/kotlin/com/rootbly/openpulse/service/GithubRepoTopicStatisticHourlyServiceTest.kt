@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.cache.CacheManager
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -19,13 +20,17 @@ import kotlin.test.assertEquals
 class GithubRepoTopicStatisticHourlyServiceTest @Autowired constructor(
     private val service: GithubRepoTopicStatisticHourlyService,
     private val repository: GithubRepoTopicStatisticHourlyRepository,
-    private val metadataRepository: GithubRepoMetadataRepository
+    private val metadataRepository: GithubRepoMetadataRepository,
+    private val cacheManager: CacheManager
 ) {
 
     @BeforeEach
     fun clean() {
         repository.deleteAll()
         metadataRepository.deleteAll()
+        cacheManager.cacheNames.forEach { cacheName ->
+            cacheManager.getCache(cacheName)?.clear()
+        }
     }
 
     @Test

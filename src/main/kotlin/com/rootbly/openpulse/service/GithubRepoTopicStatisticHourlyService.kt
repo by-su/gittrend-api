@@ -7,6 +7,7 @@ import com.rootbly.openpulse.entity.statistic.topic.GithubRepoTopicStatisticHour
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
 import com.rootbly.openpulse.repository.GithubRepoTopicStatisticHourlyRepository
 import org.slf4j.LoggerFactory
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -29,6 +30,7 @@ class GithubRepoTopicStatisticHourlyService(
     /**
      * Retrieves previous hour's topic statistics
      */
+    @Cacheable("hourlyStatistics")
     fun retrieveGithubRepoTopicStatisticHourly(): List<GithubRepoTopicStatisticHourly> {
         val timeRange = TimeRangeCalculator.getPreviousHourRange()
         return githubRepoTopicStatisticHourlyRepository.findAllByStatisticHourBetween(timeRange.start, timeRange.end)

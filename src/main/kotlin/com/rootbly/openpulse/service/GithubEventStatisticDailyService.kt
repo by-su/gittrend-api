@@ -4,6 +4,7 @@ import com.rootbly.openpulse.common.util.TimeRangeCalculator
 import com.rootbly.openpulse.entity.statistic.event.GithubEventStatisticDaily
 import com.rootbly.openpulse.repository.GithubEventStatisticDailyRepository
 import com.rootbly.openpulse.repository.GithubEventStatisticsHourlyRepository
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -57,6 +58,7 @@ class GithubEventStatisticDailyService(
      *
      * @return List of event type counts for the previous day
      */
+    @Cacheable("dailyStatistics")
     fun retrieveDaily(): List<GithubEventStatisticDaily> {
         val timeRange = TimeRangeCalculator.getPreviousDayRange()
         return githubEventStatisticDailyRepository.findAllByStatisticDayGreaterThanEqualAndStatisticDayLessThan(timeRange.start, timeRange.end)

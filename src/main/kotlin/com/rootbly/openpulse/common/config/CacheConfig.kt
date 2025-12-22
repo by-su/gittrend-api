@@ -3,6 +3,7 @@ package com.rootbly.openpulse.common.config
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.Expiry
 import org.springframework.cache.CacheManager
+import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.caffeine.CaffeineCache
 import org.springframework.cache.support.SimpleCacheManager
 import org.springframework.context.annotation.Bean
@@ -11,6 +12,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 
 @Configuration
+@EnableCaching
 class CacheConfig {
 
     @Bean

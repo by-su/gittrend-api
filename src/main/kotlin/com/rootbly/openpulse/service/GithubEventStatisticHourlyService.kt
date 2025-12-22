@@ -5,6 +5,7 @@ import com.rootbly.openpulse.entity.statistic.event.GithubEventStatisticHourly
 import com.rootbly.openpulse.repository.GithubEventRepository
 import com.rootbly.openpulse.repository.GithubEventStatisticsHourlyRepository
 import org.slf4j.LoggerFactory
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -59,6 +60,7 @@ class GithubEventStatisticHourlyService(
      *
      * @return List of event type counts for the previous hour
      */
+    @Cacheable("hourlyStatistics")
     fun retrieveGithubEventStatisticHourly(): List<GithubEventStatisticHourly> {
         val timeRange = TimeRangeCalculator.getPreviousHourRange()
         return githubEventStatisticsHourlyRepository.findAllByCreatedAtBetween(timeRange.start, timeRange.end)
