@@ -4,14 +4,11 @@ import com.rootbly.openpulse.client.GithubEventClient
 import com.rootbly.openpulse.event.broadcast.GithubMetadataEventBroadcaster
 import com.rootbly.openpulse.event.channel.GithubEventChannel
 import com.rootbly.openpulse.payload.GithubMetadataStreamDto
+import com.rootbly.openpulse.service.GithubRepoDocumentService
 import com.rootbly.openpulse.service.GithubRepoMetadataService
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -20,8 +17,10 @@ import org.springframework.stereotype.Component
 class GithubEventProcessor(
     private val githubEventChannel: GithubEventChannel,
     private val githubEventClient: GithubEventClient,
+    private val githubRepoDocumentService: GithubRepoDocumentService,
     private val githubRepoMetadataService: GithubRepoMetadataService,
     private val metadataEventBroadcaster: GithubMetadataEventBroadcaster,
+
     @Value("\${github.metadata.concurrent-workers:20}")
     private val concurrentWorkers: Int
 ) {
@@ -43,6 +42,7 @@ class GithubEventProcessor(
             try {
                 val response = githubEventClient.fetchRepoMetadata(event.repoName)
                 githubRepoMetadataService.save(response)
+                githubRepoDocumentService.save(response)
 
                 // Broadcast update to all connected clients
                 val streamDto = GithubMetadataStreamDto.from(response)
