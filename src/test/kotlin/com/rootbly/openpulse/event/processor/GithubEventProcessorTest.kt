@@ -5,6 +5,7 @@ import com.rootbly.openpulse.event.broadcast.GithubMetadataEventBroadcaster
 import com.rootbly.openpulse.event.channel.GithubEventChannel
 import com.rootbly.openpulse.event.dto.GithubRepoMetadataFetchEvent
 import com.rootbly.openpulse.fixture.GithubRepoResponseFixture
+import com.rootbly.openpulse.service.GithubRepoDocumentService
 import com.rootbly.openpulse.service.GithubRepoMetadataService
 import io.mockk.*
 import kotlinx.coroutines.delay
@@ -19,6 +20,7 @@ class GithubEventProcessorTest {
 
     private val githubEventChannel = mockk<GithubEventChannel>()
     private val githubEventClient = mockk<GithubEventClient>()
+    private val githubRepoDocumentService = mockk<GithubRepoDocumentService>()
     private val githubRepoMetadataService = mockk<GithubRepoMetadataService>()
     private val metadataEventBroadcaster = mockk<GithubMetadataEventBroadcaster>()
 
@@ -39,11 +41,13 @@ class GithubEventProcessorTest {
             GithubRepoResponseFixture.create(name = repoName)
         }
         every { githubRepoMetadataService.save(any()) } just Runs
+        every { githubRepoDocumentService.save(any()) } returns mockk()
         coEvery { metadataEventBroadcaster.broadcast(any()) } just Runs
 
         val processor = GithubEventProcessor(
             channel,
             githubEventClient,
+            githubRepoDocumentService,
             githubRepoMetadataService,
             metadataEventBroadcaster,
             concurrentWorkers = 2
@@ -88,11 +92,13 @@ class GithubEventProcessorTest {
             }
         }
         every { githubRepoMetadataService.save(any()) } just Runs
+        every { githubRepoDocumentService.save(any()) } returns mockk()
         coEvery { metadataEventBroadcaster.broadcast(any()) } just Runs
 
         val processor = GithubEventProcessor(
             channel,
             githubEventClient,
+            githubRepoDocumentService,
             githubRepoMetadataService,
             metadataEventBroadcaster,
             concurrentWorkers = 2
@@ -125,11 +131,13 @@ class GithubEventProcessorTest {
         val channel = GithubEventChannel()
         coEvery { githubEventClient.fetchRepoMetadata(any()) } returns GithubRepoResponseFixture.createSimple(name = "test")
         every { githubRepoMetadataService.save(any()) } just Runs
+        every { githubRepoDocumentService.save(any()) } returns mockk()
         coEvery { metadataEventBroadcaster.broadcast(any()) } just Runs
 
         val processor = GithubEventProcessor(
             channel,
             githubEventClient,
+            githubRepoDocumentService,
             githubRepoMetadataService,
             metadataEventBroadcaster,
             concurrentWorkers = 2
