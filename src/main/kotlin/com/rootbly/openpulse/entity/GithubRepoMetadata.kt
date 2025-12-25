@@ -26,7 +26,7 @@ class GithubRepoMetadata(
     val owner: String,
 
     @Column(length = 500)
-    val description: String,
+    val description: String = "",
 
     val fork: Boolean,
 
@@ -57,7 +57,7 @@ class GithubRepoMetadata(
     @Column(columnDefinition = "json")
     val topics: String?,
 
-    val visibility: String,
+    val visibility: String = "",
 
     @Column(name = "network_count")
     val networkCount: Int,

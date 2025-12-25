@@ -23,6 +23,11 @@ spring:
     locations: classpath:db/migration
     encoding: UTF-8
 
+  elasticsearch:
+    uris: http://localhost:9200
+    username:
+    password:
+
 logging:
   level:
     org.hibernate.engine.jdbc.batch.internal: DEBUG

@@ -2,6 +2,8 @@ package com.rootbly.openpulse.repository
 
 import com.rootbly.openpulse.entity.GithubRepoMetadata
 import com.rootbly.openpulse.payload.GithubRepoResponse
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -77,4 +79,9 @@ interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> 
         @Param("startTime") startTime: LocalDateTime,
         @Param("endTime") endTime: LocalDateTime
     ): List<GithubRepoMetadata>
+
+    fun findAllByForkIsFalse(pageable: Pageable): Page<GithubRepoMetadata>
+
+    @Query(value = "SELECT COUNT(*) FROM github_repo_metadata WHERE fork = false", nativeQuery = true)
+    fun countByForkFalse(): Long
 }

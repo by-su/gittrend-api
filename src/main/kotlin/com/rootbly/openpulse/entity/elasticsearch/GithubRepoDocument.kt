@@ -16,16 +16,16 @@ class GithubRepoDocument(
     @Id
     val repoId: Long,
 
-    @Field(type = FieldType.Text, analyzer = "name_ngram_analyzer")
+    @Field(type = FieldType.Text)
     val name: String,
 
     @Field(type = FieldType.Text, analyzer = "github_general_analyzer")
     val description: String?,
 
-    @Field(type = FieldType.Text, analyzer = "name_ngram_analyzer")
+    @Field(type = FieldType.Text)
     val topics: List<String>,
 
-    @Field(type = FieldType.Text, analyzer = "name_ngram_analyzer")
+    @Field(type = FieldType.Keyword)
     val language: String?,
 
     @Field(type = FieldType.Integer, index = false)
@@ -37,7 +37,7 @@ class GithubRepoDocument(
     @Field(type = FieldType.Integer, index = false)
     val forkCount: Int,
 
-    @Field(type = FieldType.Date)
+    @Field(type = FieldType.Date, format = [], pattern = ["uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd"])
     val updatedAt: LocalDateTime,
 ) {
     companion object {

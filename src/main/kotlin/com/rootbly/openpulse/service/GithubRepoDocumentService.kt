@@ -6,6 +6,8 @@ import com.rootbly.openpulse.entity.elasticsearch.GithubRepoDocument
 import com.rootbly.openpulse.payload.GithubRepoResponse
 import com.rootbly.openpulse.repository.GithubRepoDocumentRepository
 import com.rootbly.openpulse.repository.GithubRepoMetadataRepository
+import com.rootbly.openpulse.common.constants.SortBy
+import com.rootbly.openpulse.payload.GithubRepoSearchResult
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -23,7 +25,7 @@ class GithubRepoDocumentService(
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     companion object {
-        private const val BATCH_SIZE = 1000
+        private const val BATCH_SIZE = 10000
     }
 
     @Transactional
@@ -53,15 +55,15 @@ class GithubRepoDocumentService(
     fun syncAll(): Int {
         logger.info("Starting sync of all metadata to Elasticsearch")
 
-        val totalCount = githubRepoMetadataRepository.count()
-        logger.info("Total metadata count: $totalCount")
+        val totalCount = githubRepoMetadataRepository.countByForkFalse()
+        logger.info("Total non-fork metadata count: $totalCount")
 
         var processedCount = 0
         var pageNumber = 0
 
         while (true) {
             val pageable = PageRequest.of(pageNumber, BATCH_SIZE)
-            val page = githubRepoMetadataRepository.findAll(pageable)
+            val page = githubRepoMetadataRepository.findAllByForkIsFalse(pageable)
 
             if (page.isEmpty) {
                 break
@@ -73,13 +75,21 @@ class GithubRepoDocumentService(
                     try {
                         GithubRepoDocument.from(metadata, objectMapper)
                     } catch (e: Exception) {
-                        logger.error("Failed to convert metadata to document for repo ${metadata.repoId}: ${e.message}", e)
+                        logger.error(
+                            "Failed to convert metadata to document for repo ${metadata.repoId}: ${e.message}",
+                            e
+                        )
                         null
                     }
                 }
 
             if (documents.isNotEmpty()) {
-                githubRepoDocumentRepository.saveAll(documents)
+                try {
+
+                    githubRepoDocumentRepository.saveAll(documents)
+                } catch(e: Exception) {
+                    logger.error("실패", e)
+                }
             }
             processedCount += documents.size
 
@@ -96,4 +106,23 @@ class GithubRepoDocumentService(
         return processedCount
     }
 
+    fun search(
+        query: String?,
+        language: String?,
+        sortBy: SortBy,
+        sortDirection: String,
+        page: Int,
+        size: Int
+    ): SearchResult {
+        val searchPage = githubRepoDocumentRepository.search(query, language, sortBy, sortDirection, page, size)
+        return SearchResult(
+            totalCount = searchPage.totalElements,
+            items = searchPage.content
+        )
+    }
 }
+
+data class SearchResult(
+    val totalCount: Long,
+    val items: List<GithubRepoSearchResult>
+)

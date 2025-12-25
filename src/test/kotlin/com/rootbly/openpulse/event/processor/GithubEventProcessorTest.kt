@@ -56,6 +56,9 @@ class GithubEventProcessorTest {
         // When
         processor.startProcessing()
 
+        // Give workers time to start listening to the channel
+        delay(100)
+
         // Send test events
         channel.sendMetadataFetchEvent(GithubRepoMetadataFetchEvent("owner/repo1", 1L))
         channel.sendMetadataFetchEvent(GithubRepoMetadataFetchEvent("owner/repo2", 2L))
@@ -106,6 +109,9 @@ class GithubEventProcessorTest {
 
         // When
         processor.startProcessing()
+
+        // Give workers time to start listening to the channel
+        delay(100)
 
         // Send mix of successful and failing events
         channel.sendMetadataFetchEvent(GithubRepoMetadataFetchEvent("owner/repo1", 1L))
