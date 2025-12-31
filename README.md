@@ -7,6 +7,9 @@
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk)](https://openjdk.org/)
 [![Elasticsearch](https://img.shields.io/badge/Elasticsearch-8.x-005571?logo=elasticsearch)](https://www.elastic.co/)
 
+## Demop
+[Demo Link](https://gittrend.rootbly.com)
+
 ## Overview
 
 Gittrend is a production-ready backend service that aggregates and analyzes GitHub repository data at scale.
