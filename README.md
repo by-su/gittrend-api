@@ -7,7 +7,7 @@
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk)](https://openjdk.org/)
 [![Elasticsearch](https://img.shields.io/badge/Elasticsearch-8.x-005571?logo=elasticsearch)](https://www.elastic.co/)
 
-## Demop
+## Demo
 [Demo Link](https://gittrend.rootbly.com)
 
 ## Overview
