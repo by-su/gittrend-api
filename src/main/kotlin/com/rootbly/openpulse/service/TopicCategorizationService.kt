@@ -14,43 +14,7 @@ class TopicCategorizationService(
     private val githubRepoTopicStatisticHourlyService: GithubRepoTopicStatisticHourlyService,
     private val githubRepoTopicStatisticDailyService: GithubRepoTopicStatisticDailyService
 ) {
-    
-    /**
-     * Categorize topic list by category
-     * 
-     * @param topics Topic list to categorize
-     * @return Topic map grouped by category
-     */
-    fun categorizeTopics(topics: List<String>): Map<String, List<String>> {
-        val categorized = mutableMapOf<String, MutableList<String>>()
-        val uncategorized = mutableListOf<String>()
-        
-        topics.distinct().forEach { topic ->
-            // Check exclusion list
-            if (shouldExclude(topic)) {
-                return@forEach
-            }
-            
-            // Find category
-            val category = findCategory(topic)
-            
-            if (category != null) {
-                categorized.getOrPut(category) { mutableListOf() }.add(topic)
-            } else {
-                uncategorized.add(topic)
-            }
-        }
-        
-        // Add uncategorized items
-        if (uncategorized.isNotEmpty()) {
-            categorized["Others"] = uncategorized
-        }
-        
-        // Sort topics alphabetically within each category
-        return categorized.mapValues { it.value.sorted() }
-            .toSortedMap() // Sort categories alphabetically too
-    }
-    
+
     /**
      * Analyze categories with topic statistics
      *
