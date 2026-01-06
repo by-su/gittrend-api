@@ -1,11 +1,7 @@
 package com.rootbly.openpulse.payload
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.rootbly.openpulse.entity.GithubRepoMetadata
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 
 data class GithubRepoResponse(
@@ -13,6 +9,8 @@ data class GithubRepoResponse(
     val id: Long,
     val name: String,
     val owner: OwnerDto,
+    @JsonProperty("html_url")
+    val htmlUrl: String,
     val description: String?,
     val fork: Boolean,
     val language: String?,

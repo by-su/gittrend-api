@@ -24,7 +24,7 @@ interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> 
             created_at, updated_at, pushed_at,
             star_count, watcher_count, fork_count, open_issue_count,
             language, license_key, license_name, topics, visibility,
-            network_count, subscriber_count
+            network_count, subscriber_count, url
         ) VALUES (
             :#{#response.id},
             :#{#response.name},
@@ -44,7 +44,8 @@ interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> 
             :topicsJson,
             :#{#response.visibility},
             :#{#response.networkCount},
-            :#{#response.subscribersCount}
+            :#{#response.subscribersCount},
+            :#{#response.htmlUrl}
         )
         ON DUPLICATE KEY UPDATE
             name = VALUES(name),
@@ -64,7 +65,8 @@ interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> 
             topics = VALUES(topics),
             visibility = VALUES(visibility),
             network_count = VALUES(network_count),
-            subscriber_count = VALUES(subscriber_count)
+            subscriber_count = VALUES(subscriber_count),
+            url = VALUES(url)
     """, nativeQuery = true)
     fun upsert(
         @Param("response") response: GithubRepoResponse,
