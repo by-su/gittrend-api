@@ -39,6 +39,9 @@ class GithubRepoDocument(
 
     @Field(type = FieldType.Date, format = [], pattern = ["uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd"])
     val updatedAt: LocalDateTime,
+
+    @Field(type = FieldType.Keyword)
+    val url: String?
 ) {
     companion object {
         fun from(metadata: GithubRepoMetadata, objectMapper: ObjectMapper): GithubRepoDocument {
@@ -63,7 +66,8 @@ class GithubRepoDocument(
                 starCount = metadata.starCount,
                 watcherCount = metadata.watcherCount,
                 forkCount = metadata.forkCount,
-                updatedAt = metadata.updatedAt
+                updatedAt = metadata.updatedAt,
+                url = metadata.url ?: "https://github.com/${metadata.owner}/${metadata.name}"
             )
         }
     }

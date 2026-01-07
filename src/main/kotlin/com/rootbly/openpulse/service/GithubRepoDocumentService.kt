@@ -40,6 +40,7 @@ class GithubRepoDocumentService(
             watcherCount = githubRepo.watchersCount,
             forkCount = githubRepo.forksCount,
             updatedAt = LocalDateTime.ofInstant(githubRepo.updatedAt, ZoneId.systemDefault()),
+            url = githubRepo.htmlUrl
         )
         return githubRepoDocumentRepository.save(entity)
     }
