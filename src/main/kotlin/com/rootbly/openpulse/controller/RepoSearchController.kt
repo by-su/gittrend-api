@@ -35,6 +35,7 @@ class RepoSearchController(
                     language = doc.language,
                     starCount = doc.starCount,
                     forkCount = doc.forkCount,
+                    url = doc.url,
                     updatedAt = doc.updatedAt.atZone(ZoneId.systemDefault()).toInstant()
                 )
             }
@@ -48,12 +49,12 @@ data class RepoSearchResponse(
 )
 
 data class RepoSearchItem(
-
     val name: String,
     val description: String?,
     val topics: List<String>,
     val language: String?,
     val starCount: Int,
     val forkCount: Int,
+    val url: String?,
     val updatedAt: Instant
 )

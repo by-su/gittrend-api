@@ -12,5 +12,6 @@ data class GithubRepoSearchResult(
     val watcherCount: Int,
     val forkCount: Int,
     val updatedAt: LocalDateTime,
-    val score: Float
+    val score: Float,
+    val url: String?
 )

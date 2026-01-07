@@ -86,7 +86,8 @@ class GithubRepoDocumentRepositoryCustomImpl(
                     watcherCount = doc.watcherCount,
                     forkCount = doc.forkCount,
                     updatedAt = doc.updatedAt,
-                    score = hit.score
+                    score = hit.score,
+                    url = doc.url
                 )
             },
             pageable,

@@ -30,7 +30,8 @@ object GithubRepoResponseFixture {
         license: LicenseDto? = null,
         topics: List<String> = emptyList(),
         networkCount: Int = 0,
-        subscribersCount: Int = 0
+        subscribersCount: Int = 0,
+        url: String = "https://github.com/by-su/gittrend-api"
     ): GithubRepoResponse {
         return GithubRepoResponse(
             id = id,
@@ -54,7 +55,8 @@ object GithubRepoResponseFixture {
             license = license,
             topics = topics,
             networkCount = networkCount,
-            subscribersCount = subscribersCount
+            subscribersCount = subscribersCount,
+            htmlUrl = url
         )
     }
 

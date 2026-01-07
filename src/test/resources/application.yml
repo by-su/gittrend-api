@@ -20,6 +20,15 @@ cors:
   origins:
     - http://localhost:3000
 
+elasticsearch:
+  host: ${ELASTICSEARCH_HOST:localhost}
+  port: ${ELASTICSEARCH_PORT:9200}
+  username: ${ELASTICSEARCH_USERNAME:elastic}
+  password: ${ELASTICSEARCH_PASSWORD:}
+  ssl:
+    enabled: ${ELASTICSEARCH_SSL_ENABLED:false}
+    ca-cert-path: ${ELASTICSEARCH_CA_CERT_PATH:ca-local.crt}
+
 github:
   tokens:
     - test-token-1

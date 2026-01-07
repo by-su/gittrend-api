@@ -27,7 +27,8 @@ object GithubRepoMetadataFixture {
         topics: String? = null,
         visibility: String = "public",
         networkCount: Int = 0,
-        subscriberCount: Int = 0
+        subscriberCount: Int = 0,
+        url: String = "https://github.com/by-su/gittrend-api"
     ): GithubRepoMetadata {
         return GithubRepoMetadata(
             repoId = repoId,
@@ -48,7 +49,8 @@ object GithubRepoMetadataFixture {
             topics = topics,
             visibility = visibility,
             networkCount = networkCount,
-            subscriberCount = subscriberCount
+            subscriberCount = subscriberCount,
+            url = url,
         )
     }
 
