@@ -32,4 +32,9 @@ class GithubRepoMetadataService(
         }
         githubRepoMetadataRepository.upsert(response, topicsJson)
     }
+
+    @Transactional
+    fun updateUrlsInBatch(batchSize: Int): Int {
+        return githubRepoMetadataRepository.updateUrlsInBatch(batchSize)
+    }
 }

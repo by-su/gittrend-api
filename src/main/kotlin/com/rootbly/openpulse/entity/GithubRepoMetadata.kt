@@ -65,7 +65,7 @@ class GithubRepoMetadata(
     val subscriberCount: Int,
 
     @Column(name = "url")
-    val url: String,
+    val url: String?,
 ) {
 
     override fun equals(other: Any?): Boolean {

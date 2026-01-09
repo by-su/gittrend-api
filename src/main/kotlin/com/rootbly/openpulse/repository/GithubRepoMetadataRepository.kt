@@ -86,4 +86,13 @@ interface GithubRepoMetadataRepository: JpaRepository<GithubRepoMetadata, Long> 
 
     @Query(value = "SELECT COUNT(*) FROM github_repo_metadata WHERE fork = false", nativeQuery = true)
     fun countByForkFalse(): Long
+
+    @Modifying
+    @Query(value = """
+        UPDATE github_repo_metadata
+        SET url = CONCAT('https://github.com/', owner, '/', name)
+        WHERE url IS NULL
+        LIMIT :batchSize
+    """, nativeQuery = true)
+    fun updateUrlsInBatch(@Param("batchSize") batchSize: Int): Int
 }
