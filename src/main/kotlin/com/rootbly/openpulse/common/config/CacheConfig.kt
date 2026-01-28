@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.time.Duration
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 @Configuration
 @EnableCaching
@@ -44,8 +45,9 @@ class CacheConfig {
                 .expireAfter(object : Expiry<Any, Any> {
                     override fun expireAfterCreate(key: Any, value: Any, currentTime: Long): Long {
                         val now = LocalDateTime.now()
-                        val nextHour = now.toLocalDate()
-                            .atTime(now.hour + 1, 0, 30)
+                        val nextHour = now.truncatedTo(ChronoUnit.HOURS)
+                            .plusHours(1)
+                            .plusSeconds(30)
                         return Duration.between(now, nextHour).toNanos()
                     }
 
